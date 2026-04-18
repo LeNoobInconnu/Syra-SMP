@@ -1,16 +1,23 @@
-import Rcon from "rcon";
+import { Rcon } from "rcon-client";
+import http from "http";
 
-export default async function handler(req, res) {
-  const rcon = new Rcon("91.197.6.19:28146", 25575, ":8znvvR4zW_nAc8");
+const server = http.createServer(async (req, res) => {
+  try {
+    const rcon = await Rcon.connect({
+      host: "91.197.6.19:28146",
+      port: 25575,
+      password: ":8znvvR4zW_nAc8"
+    });
 
-  rcon.on("auth", () => {
-    rcon.send("baltop");
-  });
+    const output = await rcon.send("baltop");
+    await rcon.end();
 
-  rcon.on("response", (str) => {
-    res.status(200).json({ output: str });
-    rcon.disconnect();
-  });
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ output }));
+  } catch (err) {
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: err.message }));
+  }
+});
 
-  rcon.connect();
-}
+server.listen(process.env.PORT || 3000);

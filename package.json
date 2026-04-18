@@ -1,0 +1,12 @@
+{
+  "name": "syra-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "rcon-client": "^4.2.3"
+  }
+}

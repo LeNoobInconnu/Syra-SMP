@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syra SMP – Règlement</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="LogoSMP.jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --green:#2ecc71;--blue:#3498db;--red:#e74c3c;--yellow:#f39c12;
+      --bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;
+      --text:#e6edf3;--muted:#8b949e;--border:rgba(255,255,255,0.06);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background-color:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;min-height:100vh;
+      background-image:radial-gradient(ellipse 70% 50% at 30% 20%,rgba(231,76,60,0.05) 0%,transparent 60%),linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);
+      background-size:100% 100%,40px 40px,40px 40px;}
+    nav{position:sticky;top:0;z-index:100;background:rgba(13,17,23,0.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0;}
+    .nav-inner{max-width:100%;margin:0;display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 2rem;}
+    .nav-logo{font-family:'Press Start 2P',monospace;font-size:0.7rem;background:linear-gradient(90deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;white-space:nowrap;display:flex;align-items:center;height:40px;margin:0;}
+    .logo-img{height:40px;width:auto;display:block;}
+    .nav-links{display:flex;gap:0.25rem;list-style:none;flex-wrap:wrap;margin:0;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;padding:0.4rem 0.75rem;border-radius:6px;transition:color 0.2s,background 0.2s;}
+    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05);}
+    .nav-links a.active{color:var(--green);background:rgba(46,204,113,0.1);}
+    .nav-burger{display:none;background:none;border:none;cursor:pointer;padding:0.5rem;}
+    .nav-burger span{display:block;width:22px;height:2px;background:var(--text);margin:5px 0;border-radius:2px;}
+    @media(max-width:768px){.nav-burger{display:block;}.nav-links{display:none;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:rgba(13,17,23,0.97);padding:1rem 2rem;gap:0.5rem;border-bottom:1px solid var(--border);}.nav-links.open{display:flex;}}
+
+    .page-header{padding:5rem 2rem 3rem;max-width:1000px;margin:auto;}
+    .section-tag{font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--green);margin-bottom:0.75rem;}
+    .page-title{font-family:'Press Start 2P',monospace;font-size:clamp(1rem,3vw,1.4rem);line-height:1.8;margin-bottom:1rem;}
+    .page-sub{color:var(--muted);font-size:1rem;line-height:1.7;}
+
+    /* LAYOUT */
+    .rules-layout{max-width:1000px;margin:auto;padding:0 2rem 5rem;display:grid;grid-template-columns:220px 1fr;gap:3rem;align-items:start;}
+    @media(max-width:768px){.rules-layout{grid-template-columns:1fr;}}
+
+    /* SIDEBAR TOC */
+    .toc{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;position:sticky;top:80px;}
+    .toc-title{font-family:'Press Start 2P',monospace;font-size:0.55rem;color:var(--green);margin-bottom:1.25rem;line-height:1.8;}
+    .toc a{display:block;color:var(--muted);text-decoration:none;font-size:0.82rem;padding:0.45rem 0.75rem;border-radius:6px;margin-bottom:0.25rem;transition:color 0.2s,background 0.2s;border-left:2px solid transparent;}
+    .toc a:hover{color:var(--text);background:rgba(255,255,255,0.04);border-left-color:var(--green);}
+    .toc a.active{color:var(--green);border-left-color:var(--green);background:rgba(46,204,113,0.07);}
+
+    /* RULES CONTENT */
+    .rules-content{display:flex;flex-direction:column;gap:3rem;}
+    .rule-section{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+    .rule-section-header{padding:1.5rem 2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:1rem;}
+    .rule-section-icon{font-size:1.8rem;}
+    .rule-section-title{font-family:'Press Start 2P',monospace;font-size:0.7rem;line-height:1.8;}
+    .rule-section-title span{display:block;font-family:'Exo 2',sans-serif;font-size:0.75rem;color:var(--muted);margin-top:0.3rem;letter-spacing:normal;}
+    .rule-list{padding:1.5rem 2rem;display:flex;flex-direction:column;gap:0.75rem;}
+    .rule-item{display:flex;gap:1rem;align-items:flex-start;padding:1rem 1.25rem;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);transition:border-color 0.2s;}
+    .rule-item:hover{border-color:rgba(255,255,255,0.1);}
+    .rule-num{font-family:'Press Start 2P',monospace;font-size:0.5rem;color:var(--muted);min-width:24px;padding-top:3px;}
+    .rule-text strong{font-size:0.9rem;font-weight:700;display:block;margin-bottom:0.25rem;}
+    .rule-text span{color:var(--muted);font-size:0.84rem;line-height:1.6;}
+    .rule-item.warn{border-left:3px solid var(--yellow);}
+    .rule-item.danger{border-left:3px solid var(--red);}
+    .rule-item.ok{border-left:3px solid var(--green);}
+    .severity{display:inline-block;font-size:0.65rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:4px;margin-left:0.5rem;letter-spacing:0.05em;vertical-align:middle;}
+    .sev-warn{background:rgba(243,156,18,0.15);color:var(--yellow);}
+    .sev-ban{background:rgba(231,76,60,0.15);color:var(--red);}
+    .sev-mute{background:rgba(52,152,219,0.15);color:var(--blue);}
+
+    /* ALERT */
+    .alert{background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.25);border-radius:12px;padding:1.25rem 1.5rem;display:flex;gap:1rem;align-items:flex-start;margin-bottom:2rem;}
+    .alert-icon{font-size:1.5rem;min-width:2rem;}
+    .alert-text{font-size:0.88rem;line-height:1.7;color:var(--muted);}
+    .alert-text strong{color:var(--red);}
+
+    footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 3rem 2rem; color: var(--muted); font-size: 0.8rem; }
+    footer span { color: var(--green); }
+    .footer-inner { max-width: 1200px; margin: auto; }
+    .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+    .footer-section h4 { color: var(--green); font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    .footer-section ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-section ul li a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-section ul li a:hover { color: var(--green); }
+    .footer-logo { text-align: center; margin-bottom: 1.5rem; }
+    .footer-logo img { height: 60px; width: auto; margin-bottom: 0.5rem; }
+    .footer-logo p { color: var(--muted); font-size: 0.85rem; }
+    .footer-socials { display: flex; justify-content: center; gap: 1.5rem; margin: 2rem 0; }
+    .footer-socials a { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(46,204,113,0.1); border: 1px solid rgba(46,204,113,0.3); border-radius: 8px; color: var(--green); font-size: 1.2rem; transition: all 0.3s; }
+    .footer-socials a:hover { background: rgba(46,204,113,0.2); border-color: rgba(46,204,113,0.6); transform: translateY(-3px); }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; }
+    .footer-bottom p { margin: 0.3rem 0; }
+  </style>
+</head>
+<body id="page-reglement">
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.htm"><img src="LogoSMP.jpg" alt="Arya SMP" class="logo-img"></a>
+    <button class="nav-burger" id="burger"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.htm">Accueil</a></li>
+      <li><a href="serveur.htm">Serveur</a></li>
+      <li><a href="reglement.htm" class="active">Règlement</a></li>
+      <li><a href="boutique.htm">Boutique</a></li>
+      <li><a href="carte.htm">Carte</a></li>
+      <li><a href="equipe.htm">Équipe</a></li>
+      <li><a href="actus.htm">Actus</a></li>
+      <li><a href="classement.htm">Classement</a></li>
+      <li><a href="contact.htm">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="section-tag">📜 Règlement officiel</div>
+  <h1 class="page-title">Règlement du Serveur</h1>
+  <p class="page-sub">Le respect de ces règles est obligatoire pour jouer sur Arya SMP. Tout manquement peut entraîner des sanctions allant du mute au bannissement définitif.</p>
+  <aside>
+    <nav class="toc">
+      <div class="toc-title">Sommaire</div>
+      <a href="#general" class="active">Règles Générales</a>
+      <a href="#survie">Survie & PvP</a>
+      <a href="#economie">Économie</a>
+      <a href="#discord">Discord</a>
+    </nav>
+  </aside>
+
+  <div class="rules-content">
+
+    <div class="alert">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-text">L'ignorance des règles <strong>ne constitue pas une excuse</strong>. En vous connectant sur le serveur, vous acceptez l'intégralité du règlement. Ce document peut être mis à jour à tout moment — consultez-le régulièrement.</div>
+    </div>
+
+    <!-- GÉNÉRAL -->
+    <div class="rule-section" id="general">
+      <div class="rule-section-header">
+        <div class="rule-section-icon">📋</div>
+        <div class="rule-section-title">Règles Générales<span>Applicables à tous les modes de jeu</span></div>
+      </div>
+      <div class="rule-list">
+        <div class="rule-item ok">
+          <div class="rule-num">R01</div>
+          <div class="rule-text"><strong>Respect mutuel</strong><span>Tout joueur doit respecter les autres, qu'il s'agisse de joueurs ou de membres du staff. Les insultes, la discrimination et le harcèlement sont strictement interdits.</span></div>
+        </div>
+        <div class="rule-item warn">
+          <div class="rule-num">R02</div>
+          <div class="rule-text"><strong>Interdiction de tricher <span class="severity sev-ban">BAN</span></strong><span>L'utilisation de hacks, cheats, clients modifiés non autorisés ou tout logiciel donnant un avantage injuste est bannable immédiatement et sans avertissement.</span></div>
+        </div>
+        <div class="rule-item warn">
+          <div class="rule-num">R03</div>
+          <div class="rule-text"><strong>Pseudo & skin appropriés <span class="severity sev-mute">KICK</span></strong><span>Les pseudos et skins à caractère offensant, sexuel ou illégal sont interdits. Un kick/ban peut être prononcé sans préavis.</span></div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">R04</div>
+          <div class="rule-text"><strong>Langue de communication</strong><span>Le français est la langue principale du serveur. Des canaux sont prévus pour les autres langues sur Discord.</span></div>
+        </div>
+        <div class="rule-item danger">
+          <div class="rule-num">R05</div>
+          <div class="rule-text"><strong>Publicité interdite <span class="severity sev-ban">BAN</span></strong><span>Faire la publicité d'autres serveurs Minecraft ou plateformes concurrentes entraîne un bannissement définitif.</span></div>
+        </div>
+        <div class="rule-item warn">
+          <div class="rule-num">R06</div>
+          <div class="rule-text"><strong>Spam & flood <span class="severity sev-mute">MUTE</span></strong><span>Le spam de messages, les majuscules excessives et les caractères répétés dans le chat sont sanctionnés par un mute.</span></div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">R07</div>
+          <div class="rule-text"><strong>Signaler les bugs</strong><span>Tout bug découvert doit être signalé au staff. L'exploitation de bugs à des fins personnelles est considérée comme de la triche.</span></div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">R08</div>
+          <div class="rule-text"><strong>Obéir au staff</strong><span>Les décisions du staff sont définitives en jeu. Les appels doivent être faits sur le Discord via un ticket, pas en jeu.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SURVIE / PVP -->
+    <div class="rule-section" id="survie">
+      <div class="rule-section-header">
+        <div class="rule-section-icon">⚔️</div>
+        <div class="rule-section-title">Survie & PvP<span>Règles spécifiques aux modes survival et combat</span></div>
+      </div>
+      <div class="rule-list">
+        <div class="rule-item ok">
+          <div class="rule-num">S01</div>
+          <div class="rule-text"><strong>Zones de protection</strong><span>Il est interdit de détruire ou de modifier les constructions protégées des autres joueurs. Utilisez /claim pour protéger votre terrain.</span></div>
+        </div>
+        <div class="rule-item warn">
+          <div class="rule-num">S02</div>
+          <div class="rule-text"><strong>Grief & vol <span class="severity sev-ban">BAN</span></strong><span>Le vol et le grief (destruction volontaire de constructions d'autrui) sont bannis par les logs. Les dommages sont restaurés et le joueur banni.</span></div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">S03</div>
+          <div class="rule-text"><strong>PvP consentiel</strong><span>Le PvP hors des zones désignées nécessite le consentement des deux parties. Le kill de joueurs AFK est interdit.</span></div>
+        </div>
+        <div class="rule-item warn">
+          <div class="rule-num">S04</div>
+          <div class="rule-text"><strong>Machines à lag <span class="severity sev-warn">WARN</span></strong><span>La construction de fermes ou machines causant des lags serveur importants est interdite. Le staff peut les supprimer sans préavis.</span></div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">S05</div>
+          <div class="rule-text"><strong>Spawn & zones protégées</strong><span>Il est interdit de tuer des mobs dans les zones de spawn ou de bloquer les accès publics.</span></div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">S06</div>
+          <div class="rule-text"><strong>Arènes PvP</strong><span>Les règles spéciales des arènes prévalent sur celles du serveur. Lisez les panneaux avant de participer.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉCONOMIE -->
+    <div class="rule-section" id="economie">
+      <div class="rule-section-header">
+        <div class="rule-section-icon">💰</div>
+        <div class="rule-section-title">Économie<span>Règles du marché et des échanges entre joueurs</span></div>
+      </div>
+      <div class="rule-list">
+        <div class="rule-item ok">
+          <div class="rule-num">E01</div>
+          <div class="rule-text"><strong>Transactions équitables</strong><span>Tout échange doit être honnête. Les arnaques volontaires sont sanctionnées et les items peuvent être restitués par le staff si prouvé.</span></div>
+        </div>
+        <div class="rule-item danger">
+          <div class="rule-num">E02</div>
+          <div class="rule-text"><strong>Duplication interdite <span class="severity sev-ban">BAN</span></strong><span>L'exploitation de bugs de duplication d'items ou de monnaie est bannable définitivement. Les items dupliqués sont supprimés.</span></div>
+        </div>
+        <div class="rule-item warn">
+          <div class="rule-num">E03</div>
+          <div class="rule-text"><strong>Monopole abusif <span class="severity sev-warn">WARN</span></strong><span>Tenter de monopoliser un marché entier pour bloquer l'économie des autres joueurs est interdit et peut entraîner des sanctions.</span></div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">E04</div>
+          <div class="rule-text"><strong>Boutiques joueur</strong><span>Les boutiques ouvertes dans des zones commerciales doivent respecter les prix du marché et ne pas être abandonnées plus de 30 jours.</span></div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">E05</div>
+          <div class="rule-text"><strong>Monnaie réelle</strong><span>Tout échange de monnaie en jeu contre de l'argent réel hors boutique officielle est strictement interdit.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DISCORD -->
+    <div class="rule-section" id="discord">
+      <div class="rule-section-header">
+        <div class="rule-section-icon">💬</div>
+        <div class="rule-section-title">Discord<span>Règles de la communauté Discord</span></div>
+      </div>
+      <div class="rule-list">
+        <div class="rule-item ok">
+          <div class="rule-num">D01</div>
+          <div class="rule-text"><strong>Respectez les salons</strong><span>Chaque salon a son utilité. Respectez les sujets définis et évitez le hors-sujet.</span></div>
+        </div>
+        <div class="rule-item warn">
+          <div class="rule-num">D02</div>
+          <div class="rule-text"><strong>Contenu NSFW <span class="severity sev-ban">BAN</span></strong><span>Tout contenu explicite, choquant ou illégal est interdit partout sur le Discord, peu importe le salon.</span></div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">D03</div>
+          <div class="rule-text"><strong>Tickets de support</strong><span>Pour tout litige ou question, ouvrez un ticket. Ne sollicitez pas le staff en DM sans y être invité.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="LogoSMP.jpg" alt="Syra SMP">
+      <p>Rejoignez l'aventure, devenez une légende</p>
+    </div>
+
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.htm">Accueil</a></li>
+          <li><a href="serveur.htm">Serveur</a></li>
+          <li><a href="reglement.htm">Règlement</a></li>
+          <li><a href="boutique.htm">Boutique</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Découvrir</h4>
+        <ul>
+          <li><a href="carte.htm">Carte</a></li>
+          <li><a href="equipe.htm">Équipe</a></li>
+          <li><a href="actus.htm">Actus</a></li>
+          <li><a href="contact.htm">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Communauté</h4>
+        <ul>
+          <li><a href="https://discord.gg/PbntRm5sNy" target="_blank">Discord</a></li>
+          <li><a href="contact.htm">Support</a></li>
+          <li><a href="serveur.htm">Status du serveur</a></li>
+          <li><a href="contact.htm">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-socials">
+      <a href="https://discord.gg/PbntRm5sNy" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
+      <a href="https://youtube.com/@LeNoobInconnu" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+      <a href="https://twitter.com/LeNoobInconnu" target="_blank" title="X"><i class="fab fa-twitter"></i></a>
+      <a href="https://twitch.tv/LenoobInconnu" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 <span>Syra SMP</span> — Tous droits réservés</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('burger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  // Highlight active TOC link on scroll
+  const sections = document.querySelectorAll('[id]');
+  const tocLinks = document.querySelectorAll('.toc a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    tocLinks.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
+  });
+</script>
+</body>
+</html>

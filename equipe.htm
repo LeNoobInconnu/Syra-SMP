@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syra SMP – L'Équipe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="LogoSMP.jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root{--green:#2ecc71;--blue:#3498db;--purple:#9b59b6;--gold:#f39c12;--red:#e74c3c;--bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;--text:#e6edf3;--muted:#8b949e;--border:rgba(255,255,255,0.06);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background-color:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;min-height:100vh;
+      background-image:radial-gradient(ellipse 60% 50% at 80% 20%,rgba(155,89,182,0.07) 0%,transparent 60%),linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);
+      background-size:100% 100%,40px 40px,40px 40px;}
+    nav{position:sticky;top:0;z-index:100;background:rgba(13,17,23,0.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0;}
+    .nav-inner{max-width:100%;margin:0;display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 2rem;}
+    .nav-logo{font-family:'Press Start 2P',monospace;font-size:0.7rem;background:linear-gradient(90deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;white-space:nowrap;display:flex;align-items:center;height:40px;margin:0;}
+    .logo-img{height:40px;width:auto;display:block;}
+    .nav-links{display:flex;gap:0.25rem;list-style:none;flex-wrap:wrap;margin:0;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;padding:0.4rem 0.75rem;border-radius:6px;transition:color 0.2s,background 0.2s;}
+    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05);}
+    .nav-links a.active{color:var(--green);background:rgba(46,204,113,0.1);}
+    .nav-burger{display:none;background:none;border:none;cursor:pointer;padding:0.5rem;}
+    .nav-burger span{display:block;width:22px;height:2px;background:var(--text);margin:5px 0;border-radius:2px;}
+    @media(max-width:768px){.nav-burger{display:block;}.nav-links{display:none;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:rgba(13,17,23,0.97);padding:1rem 2rem;gap:0.5rem;border-bottom:1px solid var(--border);}.nav-links.open{display:flex;}}
+
+    .page-header{padding:5rem 2rem 3rem;max-width:1200px;margin:auto;}
+    .section-tag{font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--green);margin-bottom:0.75rem;}
+    .page-title{font-family:'Press Start 2P',monospace;font-size:clamp(1rem,3vw,1.4rem);line-height:1.8;margin-bottom:1rem;}
+    .page-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:600px;}
+
+    main{max-width:1200px;margin:auto;padding:0 2rem 5rem;display:flex;flex-direction:column;gap:4rem;}
+
+    /* RANK SECTION */
+    .rank-section h2{font-family:'Press Start 2P',monospace;font-size:0.8rem;line-height:1.8;margin-bottom:1.75rem;display:flex;align-items:center;gap:1rem;}
+    .rank-divider{flex:1;height:1px;background:var(--border);}
+
+    /* TEAM GRID */
+    .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.5rem;}
+
+    .team-card{
+      background:var(--bg2);border:1px solid var(--border);border-radius:18px;
+      overflow:hidden;transition:transform 0.3s,border-color 0.3s;
+      display:flex;flex-direction:column;
+    }
+    .team-card:hover{transform:translateY(-6px);border-color:var(--role-color,rgba(46,204,113,0.35));}
+
+    .team-card-top{
+      padding:2rem 1.5rem 1.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;
+      background:linear-gradient(160deg,var(--role-bg,rgba(46,204,113,0.05)) 0%,transparent 100%);
+      border-bottom:1px solid var(--border);
+    }
+    .avatar-wrap{position:relative;width:80px;height:80px;}
+    .avatar{
+      width:80px;height:80px;border-radius:12px;
+      background:var(--role-bg2,rgba(46,204,113,0.12));
+      border:2px solid var(--role-color,rgba(46,204,113,0.3));
+      display:flex;align-items:center;justify-content:center;
+      font-size:2.5rem;overflow:hidden;
+      /* Simulated Minecraft skin colors using CSS */
+      image-rendering:pixelated;
+    }
+    .avatar-online{
+      position:absolute;bottom:-3px;right:-3px;
+      width:14px;height:14px;border-radius:50%;border:2px solid var(--bg2);
+    }
+    .avatar-online.on{background:var(--green);box-shadow:0 0 6px rgba(46,204,113,0.7);}
+    .avatar-online.off{background:var(--muted);}
+
+    .member-pseudo{font-family:'Press Start 2P',monospace;font-size:0.6rem;line-height:1.8;text-align:center;}
+    .member-role{
+      font-size:0.68rem;font-weight:700;padding:0.25rem 0.85rem;border-radius:50px;
+      background:var(--role-bg2,rgba(46,204,113,0.12));
+      color:var(--role-color,var(--green));
+      letter-spacing:0.08em;text-transform:uppercase;
+    }
+    .team-card-body{padding:1.25rem 1.5rem;flex:1;}
+    .member-desc{color:var(--muted);font-size:0.85rem;line-height:1.7;}
+    .member-since{font-size:0.72rem;color:var(--muted);margin-top:0.75rem;opacity:0.7;}
+    .member-since span{color:var(--role-color,var(--green));}
+
+    /* Skin placeholder grid (Minecraft-style pixelated placeholder) */
+    .skin-placeholder{
+      display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);
+      width:100%;height:100%;
+    }
+    .skin-placeholder span{display:block;}
+
+    footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 3rem 2rem; color: var(--muted); font-size: 0.8rem; }
+    footer span { color: var(--green); }
+    .footer-inner { max-width: 1200px; margin: auto; }
+    .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+    .footer-section h4 { color: var(--green); font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    .footer-section ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-section ul li a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-section ul li a:hover { color: var(--green); }
+    .footer-logo { text-align: center; margin-bottom: 1.5rem; }
+    .footer-logo img { height: 60px; width: auto; margin-bottom: 0.5rem; }
+    .footer-logo p { color: var(--muted); font-size: 0.85rem; }
+    .footer-socials { display: flex; justify-content: center; gap: 1.5rem; margin: 2rem 0; }
+    .footer-socials a { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(46,204,113,0.1); border: 1px solid rgba(46,204,113,0.3); border-radius: 8px; color: var(--green); font-size: 1.2rem; transition: all 0.3s; }
+    .footer-socials a:hover { background: rgba(46,204,113,0.2); border-color: rgba(46,204,113,0.6); transform: translateY(-3px); }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; }
+    .footer-bottom p { margin: 0.3rem 0; }
+  </style>
+</head>
+<body id="page-equipe">
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.htm"><img src="LogoSMP.jpg" alt="Arya SMP" class="logo-img"></a>
+    <button class="nav-burger" id="burger"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.htm">Accueil</a></li>
+      <li><a href="serveur.htm">Serveur</a></li>
+      <li><a href="reglement.htm">Règlement</a></li>
+      <li><a href="boutique.htm">Boutique</a></li>
+      <li><a href="carte.htm">Carte</a></li>
+      <li><a href="equipe.htm" class="active">Équipe</a></li>
+      <li><a href="actus.htm">Actus</a></li>
+      <li><a href="classement.htm">Classement</a></li>
+      <li><a href="contact.htm">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="section-tag">👥 Notre équipe</div>
+  <h1 class="page-title">L'Équipe</h1>
+  <p class="page-sub">Derrière Arya SMP, une équipe passionnée travaille chaque jour pour vous offrir la meilleure expérience possible. Apprenez à les connaître.</p>
+
+  <!-- FONDATEURS -->
+  <div class="rank-section">
+    <h2>👑 Fondateurs <div class="rank-divider"></div></h2>
+    <div class="team-grid">
+
+      <div class="team-card" style="--role-color:#f39c12;--role-bg:rgba(243,156,18,0.05);--role-bg2:rgba(243,156,18,0.12);">
+        <div class="team-card-top">
+          <div class="avatar-wrap">
+            <div class="avatar">🧙</div>
+            <div class="avatar-online on"></div>
+          </div>
+          <div class="member-pseudo">_Aelindra_</div>
+          <div class="member-role">Fondateur & Owner</div>
+        </div>
+        <div class="team-card-body">
+          <p class="member-desc">Créateur du serveur et visionnaire principal. Aelindra gère la direction générale, les partenariats et la stratégie du projet.</p>
+          <div class="member-since">Membre depuis <span>Janvier 2022</span></div>
+        </div>
+      </div>
+
+      <div class="team-card" style="--role-color:#f39c12;--role-bg:rgba(243,156,18,0.05);--role-bg2:rgba(243,156,18,0.12);">
+        <div class="team-card-top">
+          <div class="avatar-wrap">
+            <div class="avatar">🏗️</div>
+            <div class="avatar-online off"></div>
+          </div>
+          <div class="member-pseudo">TheCraftMaster</div>
+          <div class="member-role">Co-Fondateur</div>
+        </div>
+        <div class="team-card-body">
+          <p class="member-desc">Architecte en chef et co-fondateur. TheCraftMaster est responsable des grandes constructions et du lore du serveur.</p>
+          <div class="member-since">Membre depuis <span>Janvier 2022</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ADMINISTRATEURS -->
+  <div class="rank-section">
+    <h2>⚙️ Administrateurs <div class="rank-divider"></div></h2>
+    <div class="team-grid">
+
+      <div class="team-card" style="--role-color:#e74c3c;--role-bg:rgba(231,76,60,0.05);--role-bg2:rgba(231,76,60,0.12);">
+        <div class="team-card-top">
+          <div class="avatar-wrap">
+            <div class="avatar">⚔️</div>
+            <div class="avatar-online on"></div>
+          </div>
+          <div class="member-pseudo">RedStormX</div>
+          <div class="member-role">Admin Technique</div>
+        </div>
+        <div class="team-card-body">
+          <p class="member-desc">Responsable des serveurs, plugins et infrastructure. RedStormX assure la stabilité et les performances 24/7.</p>
+          <div class="member-since">Membre depuis <span>Mars 2022</span></div>
+        </div>
+      </div>
+
+      <div class="team-card" style="--role-color:#e74c3c;--role-bg:rgba(231,76,60,0.05);--role-bg2:rgba(231,76,60,0.12);">
+        <div class="team-card-top">
+          <div class="avatar-wrap">
+            <div class="avatar">📋</div>
+            <div class="avatar-online off"></div>
+          </div>
+          <div class="member-pseudo">LunaModeratrix</div>
+          <div class="member-role">Admin Communauté</div>
+        </div>
+        <div class="team-card-body">
+          <p class="member-desc">Gestion de la communauté, des événements Discord et des relations publiques. Votre interlocutrice principale.</p>
+          <div class="member-since">Membre depuis <span>Avril 2022</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODÉRATEURS -->
+  <div class="rank-section">
+    <h2>🛡️ Modérateurs <div class="rank-divider"></div></h2>
+    <div class="team-grid">
+
+      <div class="team-card" style="--role-color:#3498db;--role-bg:rgba(52,152,219,0.05);--role-bg2:rgba(52,152,219,0.12);">
+        <div class="team-card-top">
+          <div class="avatar-wrap"><div class="avatar">🐺</div><div class="avatar-online on"></div></div>
+          <div class="member-pseudo">WolfGuard77</div>
+          <div class="member-role">Modérateur</div>
+        </div>
+        <div class="team-card-body">
+          <p class="member-desc">Spécialiste anti-grief. WolfGuard patrouille les zones de survie et traite les signalements en jeu.</p>
+          <div class="member-since">Membre depuis <span>Juin 2022</span></div>
+        </div>
+      </div>
+
+      <div class="team-card" style="--role-color:#3498db;--role-bg:rgba(52,152,219,0.05);--role-bg2:rgba(52,152,219,0.12);">
+        <div class="team-card-top">
+          <div class="avatar-wrap"><div class="avatar">🌸</div><div class="avatar-online off"></div></div>
+          <div class="member-pseudo">SakuraMod</div>
+          <div class="member-role">Modératrice</div>
+        </div>
+        <div class="team-card-body">
+          <p class="member-desc">Référente bien-être communautaire. SakuraMod veille à ce que le serveur reste un espace bienveillant pour tous.</p>
+          <div class="member-since">Membre depuis <span>Septembre 2022</span></div>
+        </div>
+      </div>
+
+      <div class="team-card" style="--role-color:#3498db;--role-bg:rgba(52,152,219,0.05);--role-bg2:rgba(52,152,219,0.12);">
+        <div class="team-card-top">
+          <div class="avatar-wrap"><div class="avatar">🔥</div><div class="avatar-online on"></div></div>
+          <div class="member-pseudo">FlameKnight</div>
+          <div class="member-role">Modérateur PvP</div>
+        </div>
+        <div class="team-card-body">
+          <p class="member-desc">Arbitre des arènes PvP et des tournois. FlameKnight garantit des combats équitables et sans triche.</p>
+          <div class="member-since">Membre depuis <span>Décembre 2022</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HELPERS -->
+  <div class="rank-section">
+    <h2>💚 Helpers <div class="rank-divider"></div></h2>
+    <div class="team-grid">
+
+      <div class="team-card" style="--role-color:#2ecc71;--role-bg:rgba(46,204,113,0.05);--role-bg2:rgba(46,204,113,0.12);">
+        <div class="team-card-top">
+          <div class="avatar-wrap"><div class="avatar">🌱</div><div class="avatar-online on"></div></div>
+          <div class="member-pseudo">NewbieFriend</div>
+          <div class="member-role">Helper</div>
+        </div>
+        <div class="team-card-body">
+          <p class="member-desc">Guide des nouveaux joueurs. Toujours disponible pour répondre aux questions de débutants.</p>
+          <div class="member-since">Membre depuis <span>Février 2023</span></div>
+        </div>
+      </div>
+
+      <div class="team-card" style="--role-color:#2ecc71;--role-bg:rgba(46,204,113,0.05);--role-bg2:rgba(46,204,113,0.12);">
+        <div class="team-card-top">
+          <div class="avatar-wrap"><div class="avatar">🎯</div><div class="avatar-online off"></div></div>
+          <div class="member-pseudo">ZephyrHelper</div>
+          <div class="member-role">Helper</div>
+        </div>
+        <div class="team-card-body">
+          <p class="member-desc">Expert en économie et métiers. ZephyrHelper aide les joueurs à comprendre le système économique.</p>
+          <div class="member-since">Membre depuis <span>Avril 2023</span></div>
+        </div>
+      </div>
+
+      <div class="team-card" style="--role-color:#2ecc71;--role-bg:rgba(46,204,113,0.05);--role-bg2:rgba(46,204,113,0.12);">
+        <div class="team-card-top">
+          <div class="avatar-wrap"><div class="avatar">🎪</div><div class="avatar-online on"></div></div>
+          <div class="member-pseudo">EventMakerPro</div>
+          <div class="member-role">Helper Évènements</div>
+        </div>
+        <div class="team-card-body">
+          <p class="member-desc">Organisateur d'évènements hebdomadaires. EventMakerPro prépare les jeux, concours et animations communautaires.</p>
+          <div class="member-since">Membre depuis <span>Juin 2023</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="LogoSMP.jpg" alt="Syra SMP">
+      <p>Rejoignez l'aventure, devenez une légende</p>
+    </div>
+
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.htm">Accueil</a></li>
+          <li><a href="serveur.htm">Serveur</a></li>
+          <li><a href="reglement.htm">Règlement</a></li>
+          <li><a href="boutique.htm">Boutique</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Découvrir</h4>
+        <ul>
+          <li><a href="carte.htm">Carte</a></li>
+          <li><a href="equipe.htm">Équipe</a></li>
+          <li><a href="actus.htm">Actus</a></li>
+          <li><a href="contact.htm">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Communauté</h4>
+        <ul>
+          <li><a href="https://discord.gg/PbntRm5sNy" target="_blank">Discord</a></li>
+          <li><a href="contact.htm">Support</a></li>
+          <li><a href="serveur.htm">Status du serveur</a></li>
+          <li><a href="contact.htm">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-socials">
+      <a href="https://discord.gg/PbntRm5sNy" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
+      <a href="https://youtube.com/@LeNoobInconnu" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+      <a href="https://twitter.com/LeNoobInconnu" target="_blank" title="X"><i class="fab fa-twitter"></i></a>
+      <a href="https://twitch.tv/LenoobInconnu" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 <span>Syra SMP</span> — Tous droits réservés</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('burger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+</script>
+</body>
+</html>

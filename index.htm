@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syra SMP – Accueil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="LogoSMP.jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --green: #ffffff;
+      --blue: #ffffff;
+      --bg: #0d1117;
+      --bg2: #161b22;
+      --bg3: #1c2333;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --border: rgba(255,255,255,0.06);
+      --glow-green: 0 0 20px rgba(46,204,113,0.3);
+      --glow-blue: 0 0 20px rgba(52,152,219,0.3);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Exo 2', sans-serif;
+      min-height: 100vh;
+      background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('minecraft-bg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+    }
+    .nav-inner {
+      max-width: 100%; margin: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px; padding: 0 2rem;
+    }
+    .nav-logo {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.7rem;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-decoration: none; white-space: nowrap;
+      display: flex; align-items: center; height: 40px; margin: 0;
+    }
+    .logo-img { height: 40px; width: auto; display: block; }
+    .nav-links { display: flex; gap: 0.25rem; list-style: none; flex-wrap: wrap; margin: 0; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;
+      padding: 0.4rem 0.75rem; border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-links a.active { color: var(--blue); background: rgba(52,152,219,0.1); }
+    .nav-burger { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+    .nav-burger span { display: block; width: 22px; height: 2px; background: var(--text); margin: 5px 0; border-radius: 2px; transition: 0.3s; }
+    @media(max-width:768px) {
+      .nav-burger { display: block; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: rgba(13,17,23,0.97); padding: 1rem 2rem; gap: 0.5rem; border-bottom: 1px solid var(--border); }
+      .nav-links.open { display: flex; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 90vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 4rem 2rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(52,152,219,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(52,152,219,0.1); border: 1px solid rgba(52,152,219,0.25);
+      border-radius: 50px; padding: 0.35rem 1rem;
+      font-size: 0.72rem; font-weight: 600; color: var(--blue);
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2rem;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-badge::before { content: '●'; font-size: 0.6rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .hero-logo { height: 200px; width: auto; display: block; margin-bottom: 1.5rem; animation: fadeUp 0.6s 0.15s ease both; }
+    .hero-slogan {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted); font-weight: 300; letter-spacing: 0.04em;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .hero-slogan em { color: var(--blue); font-style: normal; font-weight: 600; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.6s 0.45s ease both; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.9rem 2rem; border-radius: 8px;
+      font-family: 'Exo 2', sans-serif; font-size: 0.9rem; font-weight: 700;
+      letter-spacing: 0.05em; cursor: pointer; transition: all 0.25s;
+      text-decoration: none; border: none;
+      animation: fadeUp 0.6s 0.6s ease both;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), #0284c7);
+      color: #fff; box-shadow: var(--glow-blue);
+      position: relative;
+      border: 2px solid var(--blue);
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+    .btn-primary:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 0 40px rgba(52,152,219,0.8), inset 0 0 20px rgba(52,152,219,0.3);
+      animation: glowIntense 0.5s ease-out;
+    }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(52,152,219,0.4), inset 0 0 10px rgba(52,152,219,0.1); }
+      50% { box-shadow: 0 0 40px rgba(52,152,219,0.7), inset 0 0 20px rgba(52,152,219,0.2); }
+    }
+    @keyframes glowIntense {
+      0% { box-shadow: 0 0 20px rgba(52,152,219,0.4); }
+      100% { box-shadow: 0 0 40px rgba(52,152,219,0.8), inset 0 0 20px rgba(52,152,219,0.3); }
+    }
+    .btn-secondary {
+      background: rgba(52,152,219,0.12);
+      border: 1px solid rgba(52,152,219,0.35);
+      color: var(--blue);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .btn-secondary:hover { 
+      background: rgba(52,152,219,0.25); 
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(52,152,219,0.2);
+      border-color: rgba(52,152,219,0.6);
+    }
+    .ip-container { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.6s 0.6s ease both; }
+    .ip-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; flex: 1; min-width: 200px; max-width: 250px; text-align: center; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); animation: scaleIn 0.6s ease both; }
+    .ip-card:nth-child(1) { animation-delay: 0.1s; }
+    .ip-card:nth-child(2) { animation-delay: 0.2s; }
+    .ip-card:nth-child(3) { animation-delay: 0.3s; }
+    .ip-card:hover { border-color: var(--blue); transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 40px rgba(52,152,219,0.25); }
+    .ip-icon { width: 50px; height: 50px; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; background: rgba(52,152,219,0.1); border-radius: 8px; }
+    .ip-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 6px; }
+    .ip-icon-symbol { font-size: 1.8rem; color: var(--blue); }
+    .ip-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.5rem; font-family: 'Exo 2', sans-serif; text-transform: uppercase; font-weight: 600; letter-spacing: 0.06em; }
+    .ip-display { padding: 0.75rem 0; font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: var(--blue); letter-spacing: 0.05em; margin-bottom: 0.5rem; word-break: break-all; }
+    .ip-port { font-size: 0.6rem; color: var(--muted); margin-bottom: 0.8rem; font-family: 'Exo 2', sans-serif; font-weight: 500; }
+    .btn-copy { padding: 0.7rem 1.25rem; background: linear-gradient(135deg, rgba(52,152,219,0.2), rgba(52,152,219,0.05)); border: 1px solid rgba(52,152,219,0.4); color: var(--blue); font-weight: 700; font-size: 0.75rem; font-family: 'Exo 2', sans-serif; cursor: pointer; border-radius: 6px; transition: all 0.25s; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.4rem; }
+    .btn-copy:hover { background: rgba(52,152,219,0.25); border-color: rgba(52,152,219,0.6); transform: scale(1.05); }
+    .copy-confirm { font-size: 0.75rem; color: var(--blue); margin-top: 0.5rem; height: 1rem; opacity: 0; transition: opacity 0.3s; }
+    .copy-confirm.show { opacity: 1; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes slideInLeft { from{opacity:0;transform:translateX(-60px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes slideInRight { from{opacity:0;transform:translateX(60px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes scaleIn { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
+    @keyframes floatUp { 0%{opacity:0;transform:translateY(40px)} 100%{opacity:1;transform:translateY(0)} }
+    .scroll-reveal { opacity:0; transform:translateY(40px); transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .scroll-reveal.in-view { opacity:1; transform:translateY(0); }
+    .scroll-reveal.stagger-1 { transition-delay:0.1s; }
+    .scroll-reveal.stagger-2 { transition-delay:0.2s; }
+    .scroll-reveal.stagger-3 { transition-delay:0.3s; }
+
+    /* ── SECTIONS ── */
+    section { padding: 5rem 2rem; max-width: 1200px; margin: auto; animation: fadeUp 0.8s ease both; }
+    .section-tag {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 0.75rem;
+      animation: slideInLeft 0.6s ease both;
+    }
+    .section-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+      line-height: 1.8; margin-bottom: 1rem;
+      animation: slideInLeft 0.6s 0.1s ease both;
+    }
+    .section-sub { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 560px; animation: fadeUp 0.6s 0.2s ease both; }
+
+    /* ── FEATURES ── */
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .feature-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
+      animation: floatUp 0.8s ease both;
+    }
+    .feature-card:nth-child(1) { animation-delay: 0.1s; }
+    .feature-card:nth-child(2) { animation-delay: 0.2s; }
+    .feature-card:nth-child(3) { animation-delay: 0.3s; }
+    .feature-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--accent, rgba(52,152,219,0.05)) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .feature-card:hover { transform: translateY(-12px); border-color: rgba(52,152,219,0.5); box-shadow: 0 20px 60px rgba(52,152,219,0.2); }
+    .feature-card.blue:hover { border-color: rgba(52,152,219,0.3); }
+    .feature-card.blue { --accent: rgba(52,152,219,0.05); }
+    .feature-icon { font-size: 2.5rem; margin-bottom: 1.25rem; display: block; animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+    @keyframes bounceIn {
+      0% { opacity:0; transform:scale(0) rotate(-180deg); }
+      50% { transform:scale(1.1); }
+      100% { opacity:1; transform:scale(1) rotate(0); }
+    }
+    .feature-title { font-family: 'Press Start 2P', monospace; font-size: 0.65rem; line-height: 1.8; color: var(--blue); margin-bottom: 0.75rem; }
+    .feature-card.blue .feature-title { color: var(--blue); }
+    .feature-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+    /* ── WHY US ── */
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+    @media(max-width:768px){ .why-grid{ grid-template-columns:1fr; gap:2rem; } }
+    .why-list { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+    .why-list li { display: flex; align-items: flex-start; gap: 1rem; animation: slideInLeft 0.6s ease both; }
+    .why-list li:nth-child(1) { animation-delay: 0.1s; }
+    .why-list li:nth-child(2) { animation-delay: 0.2s; }
+    .why-list li:nth-child(3) { animation-delay: 0.3s; }
+    .why-list li:nth-child(4) { animation-delay: 0.4s; }
+    .why-list li:nth-child(5) { animation-delay: 0.5s; }
+    .why-check { width: 28px; height: 28px; min-width: 28px; border-radius: 50%; background: rgba(52,152,219,0.15); border: 1px solid rgba(52,152,219,0.3); display: flex; align-items: center; justify-content: center; color: var(--blue); font-size: 0.75rem; margin-top: 2px; animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes popIn {
+      0% { opacity:0; transform:scale(0) rotate(-180deg); }
+      70% { transform:scale(1.2) rotate(20deg); }
+      100% { opacity:1; transform:scale(1) rotate(0); }
+    }
+    .why-list strong { display: block; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .why-list span { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
+    .why-visual {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 20px;
+      aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      animation: slideInRight 0.8s 0.2s ease both;
+      transition: border-color 0.4s;
+      will-change: auto;
+    }
+    .why-visual:hover { border-color: rgba(52,152,219,0.5); }
+    .why-visual img {
+      width: 100%; height: 100%; object-fit: cover;
+      will-change: auto;
+    }
+    .why-visual::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(52,152,219,0.08) 0%, transparent 70%);
+    }
+
+    /* ── STATS ── */
+    .stats-bar { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 2rem; }
+    .stats-inner { max-width: 1200px; margin: auto; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 2rem; }
+    .stat { text-align: center; animation: scaleIn 0.8s ease both; }
+    .stat:nth-child(1) { animation-delay: 0.1s; }
+    .stat:nth-child(2) { animation-delay: 0.2s; }
+    .stat:nth-child(3) { animation-delay: 0.3s; }
+    .stat:nth-child(4) { animation-delay: 0.4s; }
+    .stat-num { font-family: 'Press Start 2P', monospace; font-size: clamp(1rem,3vw,1.6rem); color: var(--blue); display: block; animation: flipIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+    @keyframes flipIn {
+      0% { opacity:0; transform:rotateY(-90deg) rotateX(-90deg); }
+      100% { opacity:1; transform:rotateY(0) rotateX(0); }
+    }
+    .stat-label { color: var(--muted); font-size: 0.8rem; margin-top: 0.5rem; letter-spacing: 0.06em; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      color: var(--muted); font-size: 0.8rem;
+      animation: slideUp 0.8s ease;
+    }
+    @keyframes slideUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+    footer span { color: var(--blue); }
+    .footer-inner { max-width: 1200px; margin: auto; }
+    .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+    .footer-section h4 { color: var(--blue); font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; animation: slideInLeft 0.6s ease both; }
+    .footer-section ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-section ul li a { color: var(--muted); text-decoration: none; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); animation: fadeUp 0.6s ease both; }
+    .footer-section ul li a:hover { color: var(--blue); }
+    .footer-logo { text-align: center; margin-bottom: 1.5rem; }
+    .footer-logo img { height: 60px; width: auto; margin-bottom: 0.5rem; }
+    .footer-logo p { color: var(--muted); font-size: 0.85rem; }
+    .footer-socials { display: flex; justify-content: center; gap: 1.5rem; margin: 2rem 0; }
+    .footer-socials a { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(52,152,219,0.1); border: 1px solid rgba(52,152,219,0.3); border-radius: 8px; color: var(--blue); font-size: 1.2rem; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); animation: popIn 0.6s ease both; }
+    .footer-socials a:nth-child(1) { animation-delay: 0.1s; }
+    .footer-socials a:nth-child(2) { animation-delay: 0.2s; }
+    .footer-socials a:nth-child(3) { animation-delay: 0.3s; }
+    .footer-socials a:nth-child(4) { animation-delay: 0.4s; }
+    .footer-socials a:hover { background: rgba(52,152,219,0.3); border-color: rgba(52,152,219,0.8); transform: translateY(-6px) rotate(10deg); box-shadow: 0 10px 25px rgba(52,152,219,0.3); }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; }
+    .footer-bottom p { margin: 0.3rem 0; }
+  </style>
+</head>
+<body id="page-accueil">
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.htm"><img src="LogoSMP.jpg" alt="Arya SMP" class="logo-img"></a>
+    <button class="nav-burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.htm" class="active">Accueil</a></li>
+      <li><a href="serveur.htm">Serveur</a></li>
+      <li><a href="reglement.htm">Règlement</a></li>
+      <li><a href="boutique.htm">Boutique</a></li>
+      <li><a href="carte.htm">Carte</a></li>
+      <li><a href="equipe.htm">Équipe</a></li>
+      <li><a href="actus.htm">Actus</a></li>
+      <li><a href="classement.htm">Classement</a></li>
+      <li><a href="contact.htm">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <img src="LogoSMP.jpg" alt="Arya SMP" class="hero-logo">
+  <p class="hero-slogan">Rejoignez l'aventure, <em>devenez une légende</em></p>
+  <div class="hero-actions">
+    <a href="serveur.htm" class="btn btn-secondary">Découvrir le serveur</a>
+    <a href="boutique.htm" class="btn btn-primary">Boutique</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><p id="discordOnline" style="font-family: 'Press Start 2P', monospace; font-size: clamp(1rem,3vw,1.6rem); color: #3498db; display: block;">Chargement...</p><span class="stat-label">Membres en ligne</span></div>
+    <div class="stat"><p id="discordVocal" style="font-family: 'Press Start 2P', monospace; font-size: clamp(1rem,3vw,1.6rem); color: #3498db; display: block;">Chargement...</p><span class="stat-label">Membres en vocal</span></div>
+    <div class="stat"><p id="discordStatus" style="font-family: 'Press Start 2P', monospace; font-size: clamp(1rem,3vw,1.6rem); color: #3498db; display: block;">Chargement...</p><span class="stat-label">Statut du serveur</span></div>
+    <div class="stat"><span class="stat-num" style="color: #3498db;">24/7</span><span class="stat-label">Support Discord</span></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section>
+  <div class="section-tag"> Ce qui nous différencie</div>
+  <h2 class="section-title">Une expérience<br/>hors du commun</h2>
+  <p class="section-sub">Chaque aspect du serveur a été pensé pour vous offrir une aventure unique, immersive et toujours renouvelée.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">⚔</span>
+      <div class="feature-title">Gameplay unique</div>
+      <p class="feature-desc">Des mécaniques exclusives, des quêtes narratives profondes et des donjons procéduraux vous attendent. Chaque session est différente.</p>
+    </div>
+    <div class="feature-card blue">
+      <span class="feature-icon">★</span>
+      <div class="feature-title">Évènements réguliers</div>
+      <p class="feature-desc">Tournois PvP, chasses au trésor, raids de boss géants… Notre équipe organise des évènements chaque semaine pour la communauté.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon"><i class="fas fa-coins"></i></span>
+      <div class="feature-title">Économie dynamique</div>
+      <p class="feature-desc">Marché joueur en temps réel, métiers spécialisés, guildes marchandes. Construisez votre empire économique ou devenez artisan légendaire.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section>
+  <div class="section-tag"> Pourquoi nous rejoindre ?</div>
+  <div class="why-grid">
+    <div>
+      <h2 class="section-title">Plus qu'un serveur,<br/>une communauté</h2>
+      <ul class="why-list">
+        <li>
+          <div class="why-check">✓</div>
+          <div><strong>Anti-cheat & modération active</strong><span>Un staff bienveillant disponible quotidiennement pour garantir une expérience équitable.</span></div>
+        </li>
+        <li>
+          <div class="why-check">✓</div>
+          <div><strong>Mises à jour fréquentes</strong><span>Nouveaux contenus chaque mois : zones, quêtes, items et mécaniques inédites.</span></div>
+        </li>
+        <li>
+          <div class="why-check">✓</div>
+          <div><strong>Serveur haute performance</strong><span>Infrastructure dédiée, faible latence et sauvegardes automatiques toutes les heures.</span></div>
+        </li>
+        <li>
+          <div class="why-check">✓</div>
+          <div><strong>Communauté soudée</strong><span>Plus de 1 200 joueurs actifs, un Discord vivant et des amitiés qui durent au-delà du jeu.</span></div>
+        </li>
+        <li>
+          <div class="why-check">✓</div>
+          <div><strong>Gratuit & accessible</strong><span>Rejoindre le serveur est totalement gratuit. La boutique ne vend que des cosmétiques.</span></div>
+        </li>
+      </ul>
+    </div>
+    <div class="why-visual"><img src="minecraft-anticheat.jpg" alt="Anti-cheat système"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="LogoSMP.jpg" alt="Syra SMP">
+      <p>Rejoignez l'aventure, devenez une légende</p>
+    </div>
+
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.htm">Accueil</a></li>
+          <li><a href="serveur.htm">Serveur</a></li>
+          <li><a href="reglement.htm">Règlement</a></li>
+          <li><a href="boutique.htm">Boutique</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Découvrir</h4>
+        <ul>
+          <li><a href="carte.htm">Carte</a></li>
+          <li><a href="equipe.htm">Équipe</a></li>
+          <li><a href="actus.htm">Actus</a></li>
+          <li><a href="contact.htm">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Communauté</h4>
+        <ul>
+          <li><a href="https://discord.gg/PbntRm5sNy" target="_blank">Discord</a></li>
+          <li><a href="contact.htm">Support</a></li>
+          <li><a href="serveur.htm">Status du serveur</a></li>
+          <li><a href="contact.htm">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-socials">
+      <a href="https://discord.gg/PbntRm5sNy" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
+      <a href="https://youtube.com/@LeNoobInconnu" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+      <a href="https://twitter.com/LeNoobInconnu" target="_blank" title="X"><i class="fab fa-twitter"></i></a>
+      <a href="https://twitch.tv/LenoobInconnu" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 <span>Syra SMP</span> — Tous droits réservés</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav burger
+  document.getElementById('burger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  // Récupérer les données Discord en direct
+  async function updateDiscordStats() {
+    const serverId = "1097456982274883614";
+
+    try {
+      const response = await fetch(`https://discord.com/api/guilds/${serverId}/widget.json`);
+      const data = await response.json();
+
+      // Membres en ligne (juste le nombre)
+      const onlineCount = data.members.filter(m => m.status === "online").length;
+
+      // Membres en vocal (méthode correcte)
+      let vocalCount = 0;
+      if (data.channels) {
+        data.channels.forEach(channel => {
+          if (channel.type === 2 && channel.members) {
+            vocalCount += channel.members.length;
+          }
+        });
+      }
+
+      // Statut du serveur (En ligne = succès, Hors ligne = erreur)
+      const serverStatus = "En ligne";
+
+      document.getElementById("discordOnline").innerText = onlineCount;
+      document.getElementById("discordVocal").innerText = vocalCount;
+      document.getElementById("discordStatus").innerText = serverStatus;
+
+    } catch (e) {
+      document.getElementById("discordOnline").innerText = "-";
+      document.getElementById("discordVocal").innerText = "-";
+      document.getElementById("discordStatus").innerText = "Hors ligne";
+    }
+  }
+
+  updateDiscordStats();
+  setInterval(updateDiscordStats, 60000);
+
+  // Scroll reveal animations
+  const observerOptions = {
+    threshold: 0.15,
+    rootMargin: '0px 0px -100px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('section, .feature-card, .ip-card, .why-list li').forEach(el => {
+    el.classList.add('scroll-reveal');
+    observer.observe(el);
+  });
+
+  // Parallax effect on scroll (optimisé)
+  let ticking = false;
+  let lastScrollY = 0;
+  const parallaxElements = document.querySelectorAll('.why-visual');
+  
+  window.addEventListener('scroll', () => {
+    lastScrollY = window.scrollY;
+    if (!ticking) {
+      window.requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }, { passive: true });
+  
+  function updateParallax() {
+    parallaxElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        const offset = (lastScrollY - (rect.top + window.scrollY)) * 0.15;
+        el.style.transform = `translateY(${offset}px)`;
+      }
+    });
+    ticking = false;
+  }
+
+</script>
+</body>
+</html>

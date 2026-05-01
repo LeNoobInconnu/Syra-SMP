@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syra SMP – Rejoignez l'aventure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="LogoSMP.jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --c-bg: #0d1117;
+      --c-bg2: #161b22;
+      --c-bg3: #1c2333;
+      --c-text: #e6edf3;
+      --c-muted: #8b949e;
+      --c-border: rgba(255,255,255,0.07);
+      --c-accent: #3b82f6;
+      --c-accent2: #60a5fa;
+      --c-green: #22c55e;
+      --c-yellow: #facc15;
+      --c-red: #ef4444;
+      --radius: 1.25rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--c-bg);
+      color: var(--c-text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    .hdr {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .hdr__inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; padding: 0 2rem;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.75rem;
+      text-decoration: none; font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem; color: var(--c-accent);
+      letter-spacing: 0.1em;
+    }
+    .logo img { height: 36px; width: auto; border-radius: 8px; }
+    .hdr-nav { display: flex; gap: 0.25rem; list-style: none; }
+    .hdr-nav a {
+      color: var(--c-muted); text-decoration: none;
+      font-size: 0.85rem; font-weight: 600;
+      padding: 0.4rem 0.9rem; border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .hdr-nav a:hover { color: var(--c-text); background: rgba(255,255,255,0.06); }
+    .hdr-nav a.active { color: var(--c-accent); background: rgba(59,130,246,0.12); }
+    .hdr__right { display: flex; align-items: center; gap: 0.75rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.5rem; border-radius: 999px;
+      font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; transition: all 0.25s; text-decoration: none; border: none;
+    }
+    .btn--primary { background: var(--c-accent); color: #fff; }
+    .btn--primary:hover { background: var(--c-accent2); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,130,246,0.4); }
+    .btn--secondary { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.3); color: var(--c-accent); }
+    .btn--secondary:hover { background: rgba(59,130,246,0.2); transform: translateY(-2px); }
+
+    /* burger */
+    .nav-burger { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--c-text); font-size: 1.3rem; }
+    @media(max-width:900px) {
+      .hdr-nav { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(13,17,23,0.98); padding: 1.5rem 2rem; gap: 0.5rem; border-bottom: 1px solid var(--c-border); }
+      .hdr-nav.open { display: flex; }
+      .nav-burger { display: block; }
+    }
+
+    /* ─── INNER ─── */
+    .inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative; overflow: hidden;
+      min-height: 95vh;
+      display: flex; align-items: center;
+      background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(59,130,246,0.15) 0%, transparent 70%);
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url('minecraft-bg.jpg') center/cover no-repeat;
+      opacity: 0.15;
+    }
+    .hero__inner {
+      position: relative;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: center; padding: 6rem 2rem; max-width: 1200px; margin: 0 auto;
+    }
+    @media(max-width:768px) {
+      .hero__inner { grid-template-columns: 1fr; text-align: center; padding: 4rem 1.5rem; gap: 2.5rem; }
+    }
+    .hero__badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 999px; padding: 0.35rem 1rem;
+      font-size: 0.72rem; font-weight: 700; color: var(--c-green);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .hero__badge::before { content: '●'; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero__title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      line-height: 2; margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+    .hero__title .accent { color: var(--c-accent); }
+    .hero__title .strike {
+      text-decoration: line-through; opacity: 0.4;
+      display: inline-block; animation: jitter 0.08s infinite alternate;
+    }
+    @keyframes jitter { 0%{transform:translate(0,0)} 100%{transform:translate(1px,1px); filter:blur(0.5px)} }
+    .hero__sub { color: var(--c-muted); font-size: 1.15rem; margin-bottom: 2.5rem; line-height: 1.8; max-width: 520px; }
+    .hero__actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    @media(max-width:768px) { .hero__actions { justify-content: center; } }
+    .hero__comp { position: relative; }
+    .hero__img-wrap {
+      border-radius: 1.5rem; overflow: hidden;
+      border: 1px solid var(--c-border);
+      background: var(--c-bg2);
+      aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .hero__img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .hero__pill {
+      position: absolute;
+      background: var(--c-bg3); border: 1px solid var(--c-border);
+      border-radius: 999px; padding: 0.6rem 1.25rem;
+      font-size: 0.8rem; font-weight: 700; white-space: nowrap;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .hero__pill--1 { bottom: -1rem; left: -2rem; animation: float 5s 1s ease-in-out infinite; }
+    .hero__pill--2 { top: -0.5rem; right: -1rem; animation: float 4s 0.5s ease-in-out infinite; }
+    .hero__pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot--green { background: var(--c-green); box-shadow: 0 0 8px var(--c-green); }
+    .dot--blue { background: var(--c-accent); box-shadow: 0 0 8px var(--c-accent); }
+
+    /* ─── FEATURES BAR ─── */
+    .features-bar {
+      border-top: 1px solid var(--c-border);
+      border-bottom: 1px solid var(--c-border);
+      overflow: hidden; padding: 1.25rem 0;
+    }
+    .features-bar__track {
+      display: flex; gap: 0; width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .features-bar__item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0 2.5rem; white-space: nowrap;
+      font-size: 0.85rem; font-weight: 700; color: var(--c-muted);
+      letter-spacing: 0.05em;
+    }
+    .features-bar__item .icon { font-size: 1.2rem; }
+
+    /* ─── BIGTEXT SECTION ─── */
+    .bigtext { padding: 7rem 2rem; }
+    .bigtext__inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .bigtext h2 {
+      font-size: clamp(1.5rem, 4vw, 2.8rem);
+      font-weight: 900; line-height: 1.4; margin-bottom: 2rem;
+    }
+    .bigtext h2 .strike { text-decoration: line-through; opacity: 0.4; }
+    .bigtext h2 .hl { color: var(--c-accent); }
+    .bigtext p { color: var(--c-muted); font-size: 1.15rem; max-width: 640px; margin: 0 auto 3rem; line-height: 1.8; }
+
+    /* ─── STORY CARDS (tilted) ─── */
+    .story-trail { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; max-width: 1000px; margin: 0 auto; }
+    .story-card {
+      flex: 0 0 calc(33% - 1.5rem); min-width: 260px;
+      border: 2px solid var(--c-border); border-radius: 1.5rem;
+      padding: 2.5rem; position: relative;
+      background: var(--c-bg2);
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .story-card:hover { border-color: rgba(59,130,246,0.5); transform: translateY(-4px) rotate(0deg) !important; }
+    .story-card:nth-child(1) { transform: rotate(-2deg); }
+    .story-card:nth-child(2) { transform: rotate(1.5deg); margin-top: 1rem; }
+    .story-card:nth-child(3) { transform: rotate(-2.5deg); }
+    .story-card__cross {
+      position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%);
+      width: 3rem; height: 3rem;
+      background: var(--c-red); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 1rem;
+    }
+    .story-card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--c-text); }
+    .story-card p { color: var(--c-muted); font-size: 0.9rem; line-height: 1.7; }
+
+    /* ─── PRODUCTS / IP CARDS ─── */
+    .products { padding: 6rem 2rem; }
+    .products__header { text-align: center; margin-bottom: 4rem; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--c-accent); display: block; margin-bottom: 0.75rem; }
+    .products__header h2 { font-family: 'Press Start 2P', monospace; font-size: clamp(0.9rem, 2vw, 1.4rem); line-height: 2; margin-bottom: 1rem; }
+    .products__header p { color: var(--c-muted); font-size: 1.05rem; max-width: 520px; margin: 0 auto; }
+    .product-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+    .product-card {
+      background: var(--c-bg2); border: 1px solid var(--c-border);
+      border-radius: 1.5rem; padding: 2.5rem 2rem; text-align: center;
+      transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden;
+    }
+    .product-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--card-color, var(--c-accent)); }
+    .product-card:hover { transform: translateY(-8px); border-color: rgba(59,130,246,0.4); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .product-card__icon { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
+    .product-card__label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 0.5rem; font-weight: 700; display: block; }
+    .product-card__title { font-family: 'Press Start 2P', monospace; font-size: 0.75rem; line-height: 2; color: var(--c-text); margin-bottom: 0.5rem; }
+    .product-card__sub { color: var(--c-muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+    .ip-display {
+      font-family: 'Press Start 2P', monospace; font-size: 0.6rem;
+      color: var(--c-accent); background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.2); border-radius: 8px;
+      padding: 0.75rem 1rem; margin-bottom: 1rem; word-break: break-all; line-height: 1.8;
+    }
+    .btn-copy {
+      padding: 0.6rem 1.25rem; background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.3); color: var(--c-accent);
+      border-radius: 999px; font-weight: 700; font-size: 0.8rem;
+      cursor: pointer; transition: all 0.25s; font-family: 'Outfit', sans-serif;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .btn-copy:hover { background: rgba(59,130,246,0.25); transform: scale(1.05); }
+    .copy-confirm { font-size: 0.75rem; color: var(--c-green); margin-top: 0.5rem; height: 1.2rem; opacity: 0; transition: opacity 0.3s; }
+    .copy-confirm.show { opacity: 1; }
+
+    /* ─── BIG QUOTE ─── */
+    .bigquote { padding: 5rem 2rem; }
+    .bigquote__inner { max-width: 800px; margin: 0 auto; text-align: center; }
+    .bigquote blockquote {
+      font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 700;
+      line-height: 1.5; margin-bottom: 2rem; position: relative;
+    }
+    .bigquote blockquote::before { content: '"'; font-size: 6rem; color: rgba(59,130,246,0.2); position: absolute; top: -2rem; left: -1rem; font-family: Georgia, serif; line-height: 1; }
+    .bigquote__author { display: flex; align-items: center; justify-content: center; gap: 1rem; }
+    .bigquote__avatar { width: 60px; height: 60px; border-radius: 50%; overflow: hidden; background: var(--c-bg3); border: 2px solid var(--c-border); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .bigquote__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .bigquote__name { font-weight: 800; font-size: 1rem; display: block; }
+    .bigquote__role { color: var(--c-muted); font-size: 0.85rem; display: block; }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials { padding: 5rem 0; overflow: hidden; }
+    .testimonials__header { text-align: center; padding: 0 2rem; margin-bottom: 3rem; }
+    .testimonials__header h2 { font-family: 'Press Start 2P', monospace; font-size: clamp(0.85rem, 1.8vw, 1.2rem); line-height: 2; }
+    .testimonials__scroll { display: flex; gap: 1.5rem; overflow-x: auto; padding: 1rem 2rem 2rem; scrollbar-width: none; }
+    .testimonials__scroll::-webkit-scrollbar { display: none; }
+    .testi-card {
+      flex: 0 0 320px; background: var(--c-bg2); border: 1px solid var(--c-border);
+      border-radius: 1.25rem; padding: 2rem; display: flex; flex-direction: column;
+      gap: 1rem;
+    }
+    .stars { color: var(--c-yellow); font-size: 0.9rem; letter-spacing: 0.1em; }
+    .testi-card h4 { font-weight: 800; font-size: 1rem; }
+    .testi-card p { color: var(--c-muted); font-size: 0.9rem; line-height: 1.7; flex: 1; }
+    .testi-card__author { display: flex; align-items: center; gap: 0.75rem; }
+    .testi-card__avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--c-bg3); border: 2px solid var(--c-border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; overflow: hidden; }
+    .testi-card__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .testi-card__name { font-weight: 700; font-size: 0.9rem; }
+    .testi-card--1star .stars { color: var(--c-muted); }
+
+    /* ─── WHY DECAF / WHY JOIN ─── */
+    .whyjoin { padding: 6rem 2rem; }
+    .whyjoin__inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    @media(max-width:768px) { .whyjoin__inner { grid-template-columns: 1fr; gap: 2.5rem; } }
+    .whyjoin__list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+    .whyjoin__item { display: flex; gap: 1rem; align-items: flex-start; }
+    .whyjoin__check {
+      width: 30px; height: 30px; min-width: 30px;
+      border-radius: 50%; background: rgba(59,130,246,0.15);
+      border: 1px solid rgba(59,130,246,0.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--c-accent); font-size: 0.8rem; margin-top: 2px;
+    }
+    .whyjoin__item strong { display: block; font-size: 1rem; font-weight: 800; margin-bottom: 0.2rem; }
+    .whyjoin__item span { color: var(--c-muted); font-size: 0.9rem; line-height: 1.6; }
+    .whyjoin__visual {
+      border-radius: 1.5rem; overflow: hidden;
+      border: 1px solid var(--c-border);
+      aspect-ratio: 4/3;
+      background: var(--c-bg2);
+      position: relative;
+    }
+    .whyjoin__visual img { width: 100%; height: 100%; object-fit: cover; }
+    .whyjoin__visual-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 1rem;
+      background: linear-gradient(135deg, var(--c-bg2) 0%, var(--c-bg3) 100%);
+    }
+    .whyjoin__visual-placeholder .big-icon { font-size: 5rem; }
+    .whyjoin__visual-placeholder p { color: var(--c-muted); font-size: 0.85rem; font-weight: 600; }
+
+    /* ─── STATS ─── */
+    .stats { border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); padding: 3rem 2rem; }
+    .stats__inner { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 2.5rem; }
+    .stat-item { text-align: center; }
+    .stat-num { font-family: 'Press Start 2P', monospace; font-size: clamp(1rem, 3vw, 1.8rem); color: var(--c-accent); display: block; margin-bottom: 0.5rem; }
+    .stat-label { color: var(--c-muted); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; }
+
+    /* ─── ABOUT ─── */
+    .about { padding: 6rem 2rem; }
+    .about__inner { max-width: 1200px; margin: 0 auto; }
+    .about__card {
+      background: var(--c-bg2); border: 1px solid var(--c-border);
+      border-radius: 1.5rem; padding: 3rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    }
+    @media(max-width:768px) { .about__card { grid-template-columns: 1fr; gap: 2rem; } }
+    .about__card h2 { font-size: 1.8rem; font-weight: 900; margin-bottom: 1.5rem; }
+    .about__card p { color: var(--c-muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem; }
+    .about__img { border-radius: 1.25rem; overflow: hidden; aspect-ratio: 4/3; background: var(--c-bg3); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; }
+    .about__img img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ─── GALLERY ─── */
+    .gallery { padding: 5rem 0; }
+    .gallery__header { text-align: center; padding: 0 2rem; margin-bottom: 3rem; }
+    .gallery__header h2 { font-family: 'Press Start 2P', monospace; font-size: clamp(0.85rem, 1.8vw, 1.2rem); line-height: 2; }
+    .gallery__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 0 2rem; }
+    @media(max-width:768px) { .gallery__grid { grid-template-columns: repeat(2, 1fr); } }
+    .gallery__item { aspect-ratio: 1; border-radius: 1rem; overflow: hidden; background: var(--c-bg2); border: 1px solid var(--c-border); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; transition: transform 0.3s; }
+    .gallery__item:hover { transform: scale(1.04); }
+    .gallery__item img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ─── FOOTER ─── */
+    .ftr { background: var(--c-bg2); border-top: 1px solid var(--c-border); padding: 4rem 2rem 2rem; }
+    .ftr__inner { max-width: 1200px; margin: 0 auto; }
+    .ftr__top { text-align: center; margin-bottom: 3rem; }
+    .ftr__headline { font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 900; line-height: 1.4; margin-bottom: 0.5rem; }
+    .ftr__headline .anim-text { color: var(--c-accent); }
+    .ftr__sub { color: var(--c-muted); margin-bottom: 2rem; font-size: 1rem; }
+    .ftr__form { display: flex; gap: 0.75rem; max-width: 420px; margin: 0 auto 2rem; flex-wrap: wrap; justify-content: center; }
+    .ftr__input {
+      flex: 1; min-width: 200px; padding: 0.85rem 1.25rem;
+      background: var(--c-bg); border: 1px solid var(--c-border);
+      border-radius: 999px; color: var(--c-text); font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem; outline: none;
+    }
+    .ftr__input:focus { border-color: var(--c-accent); }
+    .ftr__note { color: var(--c-muted); font-size: 0.8rem; max-width: 480px; margin: 0 auto 3rem; }
+    .ftr__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 2rem; padding: 2.5rem 0; border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); margin-bottom: 2rem; }
+    .ftr__col h4 { font-size: 0.85rem; font-weight: 800; margin-bottom: 1rem; color: var(--c-text); }
+    .ftr__col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .ftr__col ul li a { color: var(--c-muted); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+    .ftr__col ul li a:hover { color: var(--c-accent); }
+    .ftr__socials { display: flex; gap: 1rem; margin-bottom: 1rem; }
+    .ftr__social {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--c-border); background: var(--c-bg);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--c-muted); font-size: 1.1rem; text-decoration: none;
+      transition: all 0.25s;
+    }
+    .ftr__social:hover { border-color: var(--c-accent); color: var(--c-accent); transform: translateY(-3px); }
+    .ftr__bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .ftr__legal { font-size: 0.78rem; color: var(--c-muted); display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .ftr__legal a { color: var(--c-muted); text-decoration: none; }
+    .ftr__legal a:hover { color: var(--c-accent); }
+    .ftr__copy { font-size: 0.78rem; color: var(--c-muted); }
+    .ftr__copy span { color: var(--c-accent); }
+
+    /* ─── UTILS ─── */
+    .tc { text-align: center; }
+    .mb-4 { margin-bottom: 2.5rem; }
+    h2.section-title { font-family: 'Press Start 2P', monospace; font-size: clamp(0.9rem, 2vw, 1.3rem); line-height: 2; margin-bottom: 1rem; }
+    .section-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--c-accent); margin-bottom: 0.75rem; }
+    .section-sub { color: var(--c-muted); font-size: 1rem; line-height: 1.7; max-width: 560px; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="hdr">
+  <div class="hdr__inner">
+    <a class="logo" href="index.htm">
+      <img src="LogoSMP.jpg" alt="Syra SMP">
+      SYRA SMP
+    </a>
+    <button class="nav-burger" id="burger" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    <ul class="hdr-nav" id="navLinks">
+      <li><a href="index.htm" class="active">Accueil</a></li>
+      <li><a href="serveur.htm">Serveur</a></li>
+      <li><a href="reglement.htm">Règlement</a></li>
+      <li><a href="boutique.htm">Boutique</a></li>
+      <li><a href="carte.htm">Carte</a></li>
+      <li><a href="equipe.htm">Équipe</a></li>
+      <li><a href="actus.htm">Actus</a></li>
+      <li><a href="classement.htm">Classement</a></li>
+      <li><a href="contact.htm">Contact</a></li>
+    </ul>
+    <div class="hdr__right">
+      <a href="boutique.htm" class="btn btn--primary" style="display:none">Boutique →</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero__inner inner">
+    <div class="hero__text">
+      <div class="hero__badge">
+        <span class="dot dot--green"></span> Serveur en ligne
+      </div>
+      <h1 class="hero__title">
+        Fini les serveurs<br>
+        <span class="strike">ennuyeux</span><br>
+        <span class="accent">Bienvenue chez Syra.</span>
+      </h1>
+      <p class="hero__sub">
+        Un SMP Minecraft où chaque session est une nouvelle aventure. Des events tous les weekends, une communauté soudée, et du fun garanti.
+      </p>
+      <div class="hero__actions">
+        <a href="serveur.htm" class="btn btn--primary">Rejoindre maintenant →</a>
+        <a href="#pourquoi" class="btn btn--secondary">Pourquoi nous ?</a>
+      </div>
+    </div>
+    <div class="hero__comp">
+      <div class="hero__img-wrap">
+        <img src="minecraft-bg.jpg" alt="Syra SMP gameplay" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:8rem\'>⛏️</div>'">
+      </div>
+      <div class="hero__pill hero__pill--1">
+        <span class="dot dot--green"></span> 300+ joueurs Discord
+      </div>
+      <div class="hero__pill hero__pill--2">
+        ⚔️ PvP · Économie · Events
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES BAR -->
+<div class="features-bar">
+  <div class="features-bar__track">
+    <div class="features-bar__item"><span class="icon">⚔️</span> PvP & Combat</div>
+    <div class="features-bar__item"><span class="icon">🏠</span> Construction libre</div>
+    <div class="features-bar__item"><span class="icon">💰</span> Économie dynamique</div>
+    <div class="features-bar__item"><span class="icon">🎮</span> Mini-jeux</div>
+    <div class="features-bar__item"><span class="icon">🌍</span> Carte interactive</div>
+    <div class="features-bar__item"><span class="icon">🛡️</span> Anti-cheat actif</div>
+    <div class="features-bar__item"><span class="icon">🎉</span> Events hebdos</div>
+    <div class="features-bar__item"><span class="icon">🤝</span> Communauté active</div>
+    <!-- Duplicate for seamless loop -->
+    <div class="features-bar__item"><span class="icon">⚔️</span> PvP & Combat</div>
+    <div class="features-bar__item"><span class="icon">🏠</span> Construction libre</div>
+    <div class="features-bar__item"><span class="icon">💰</span> Économie dynamique</div>
+    <div class="features-bar__item"><span class="icon">🎮</span> Mini-jeux</div>
+    <div class="features-bar__item"><span class="icon">🌍</span> Carte interactive</div>
+    <div class="features-bar__item"><span class="icon">🛡️</span> Anti-cheat actif</div>
+    <div class="features-bar__item"><span class="icon">🎉</span> Events hebdos</div>
+    <div class="features-bar__item"><span class="icon">🤝</span> Communauté active</div>
+  </div>
+</div>
+
+<!-- BIGTEXT + PROBLEMS -->
+<div class="bigtext">
+  <div class="bigtext__inner">
+    <h2>
+      Les gens disent que les SMP c'est pour les noobs.<br><br>
+      Si être un "noob" signifie
+      <span class="strike">grinder sans fin</span>,
+      <span class="hl">s'éclater chaque soir</span>, jouer avec des amis et
+      construire l'empire le plus fou de tout le serveur...<br><br>
+      Alors ouais, signez-nous là-dedans.
+    </h2>
+    <p>
+      Adieu l'ennui ! Adieu les serveurs vides !<br>
+      Bonjour le chaos organisé, les batailles épiques et une vie en blocs qui vaut le coup d'être vécue.
+    </p>
+
+    <h3 style="font-size:1.3rem;font-weight:900;margin-bottom:3rem;color:var(--c-muted)">Pourquoi la plupart des serveurs déçoivent</h3>
+    <div class="story-trail">
+      <div class="story-card">
+        <div class="story-card__cross">✕</div>
+        <h3>Staff fantôme</h3>
+        <p>Tu signales un cheater, tu attends 3 semaines, il est toujours là. Classique. Notre équipe répond sous 24h, sérieusement.</p>
+      </div>
+      <div class="story-card">
+        <div class="story-card__cross">✕</div>
+        <h3>Pay-to-win honteux</h3>
+        <p>Tu spawnes à côté d'un gars full diamant qui a payé 50€. On refuse ça. Notre boutique : cosmétiques uniquement. Promis.</p>
+      </div>
+      <div class="story-card">
+        <div class="story-card__cross">✕</div>
+        <h3>Aucun event</h3>
+        <p>Une map vide, personne en ligne, et le dernier event date de Noël 2022. Chez nous, chaque weekend apporte quelque chose de nouveau.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IP / REJOINDRE SECTION -->
+<div class="products" id="rejoindre">
+  <div class="inner">
+    <div class="products__header">
+      <span class="eyebrow">Choisissez votre aventure</span>
+      <h2 class="section-title">Connectez-vous.<br>Regnez.</h2>
+      <p>Des modes de jeu pour tous les profils. Explorez, construisez, combattez.</p>
+    </div>
+    <div class="product-cards">
+
+      <div class="product-card" style="--card-color: #22c55e">
+        <span class="product-card__icon">🏕️</span>
+        <span class="product-card__label">Mode principal</span>
+        <div class="product-card__title">Survie SMP</div>
+        <div class="product-card__sub">Le cœur du serveur. Commerce, alliances, guerres et construction.</div>
+        <div class="ip-display" id="ip1">play.syrasmp.fr</div>
+        <button class="btn-copy" onclick="copyIP('play.syrasmp.fr', this)">
+          <i class="fas fa-copy"></i> Copier l'IP
+        </button>
+        <div class="copy-confirm">✓ Copié !</div>
+      </div>
+
+      <div class="product-card" style="--card-color: #f59e0b">
+        <span class="product-card__icon">⚔️</span>
+        <span class="product-card__label">Arène de combat</span>
+        <div class="product-card__title">PvP Arena</div>
+        <div class="product-card__sub">Duel, classement, tournois. Prouvez que vous êtes le meilleur.</div>
+        <div class="ip-display" id="ip2">play.syrasmp.fr</div>
+        <button class="btn-copy" onclick="copyIP('play.syrasmp.fr', this)">
+          <i class="fas fa-copy"></i> Copier l'IP
+        </button>
+        <div class="copy-confirm">✓ Copié !</div>
+      </div>
+
+      <div class="product-card" style="--card-color: #a855f7">
+        <span class="product-card__icon">🎮</span>
+        <span class="product-card__label">Pour s'amuser</span>
+        <div class="product-card__title">Mini-jeux</div>
+        <div class="product-card__sub">TNT Run, Bedwars, Spleef… Parfait pour une session rapide entre amis.</div>
+        <div class="ip-display" id="ip3">play.syrasmp.fr</div>
+        <button class="btn-copy" onclick="copyIP('play.syrasmp.fr', this)">
+          <i class="fas fa-copy"></i> Copier l'IP
+        </button>
+        <div class="copy-confirm">✓ Copié !</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- BIGQUOTE -->
+<div class="bigquote">
+  <div class="bigquote__inner">
+    <blockquote>"Je savais pas que Minecraft pouvait être aussi fun. Ce serveur m'a converti. Je reviens chaque soir."</blockquote>
+    <div class="bigquote__author">
+      <div class="bigquote__avatar">🧑‍💻</div>
+      <div>
+        <span class="bigquote__name">AlexMiner42</span>
+        <span class="bigquote__role">Joueur depuis la saison 1 · Ancien noob, maintenant légende</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="testimonials">
+  <div class="testimonials__header">
+    <span class="eyebrow">Ce qu'ils en disent</span>
+    <h2 class="section-title">Des joueurs heureux,<br>pas des robots.</h2>
+  </div>
+  <div class="testimonials__scroll">
+
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <h4>Le meilleur SMP que j'ai testé</h4>
+      <p>La communauté est tellement sympa, les mods sont réactifs et les events du weekend valent vraiment le déplacement. Je reviens jamais en arrière.</p>
+      <div class="testi-card__author">
+        <div class="testi-card__avatar">🎮</div>
+        <div>
+          <div class="testi-card__name">CraftingPro99</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <h4>L'économie c'est une tuerie</h4>
+      <p>J'ai monté ma boutique in-game, j'ai des clients réguliers, j'ai accumulé une fortune. C'est littéralement un jeu dans le jeu.</p>
+      <div class="testi-card__author">
+        <div class="testi-card__avatar">💰</div>
+        <div>
+          <div class="testi-card__name">MerchantKing</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <h4>Un staff au top</h4>
+      <p>J'ai signalé un cheater à 23h un dimanche. Réponse en 20 minutes, banissement confirmé. C'est ça la différence.</p>
+      <div class="testi-card__author">
+        <div class="testi-card__avatar">🛡️</div>
+        <div>
+          <div class="testi-card__name">FairPlayer2025</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card testi-card--1star">
+      <div class="stars">★☆☆☆☆</div>
+      <h4>Où est mon sommeil ??</h4>
+      <p>Je devais juste "vérifier une chose" et là il est 3h du matin. C'est entièrement la faute du serveur. Je reviens demain.</p>
+      <div class="testi-card__author">
+        <div class="testi-card__avatar">😴</div>
+        <div>
+          <div class="testi-card__name">SleepDeprivedNoob</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <h4>La map est magnifique</h4>
+      <p>Les constructions des autres joueurs sont folles. Ça m'a même donné envie de m'améliorer. Maintenant je construis des châteaux.</p>
+      <div class="testi-card__author">
+        <div class="testi-card__avatar">🏰</div>
+        <div>
+          <div class="testi-card__name">BuilderQueen</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats__inner">
+    <div class="stat-item">
+      <span class="stat-num" id="discordOnline">...</span>
+      <span class="stat-label">Membres en ligne</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="discordVocal">...</span>
+      <span class="stat-label">En vocal</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="discordTotal">300+</span>
+      <span class="stat-label">Membres Discord</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="discordStatus">...</span>
+      <span class="stat-label">Statut du serveur</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">24/7</span>
+      <span class="stat-label">Support Discord</span>
+    </div>
+  </div>
+</div>
+
+<!-- WHY JOIN -->
+<div class="whyjoin" id="pourquoi">
+  <div class="whyjoin__inner inner">
+    <div>
+      <span class="section-tag">Pourquoi nous rejoindre ?</span>
+      <h2 class="section-title">Plus qu'un serveur,<br>une communauté.</h2>
+      <ul class="whyjoin__list">
+        <li class="whyjoin__item">
+          <div class="whyjoin__check">✓</div>
+          <div><strong>Anti-cheat & modération active</strong><span>Un staff bienveillant disponible chaque jour pour garantir une expérience équitable.</span></div>
+        </li>
+        <li class="whyjoin__item">
+          <div class="whyjoin__check">✓</div>
+          <div><strong>Mises à jour fréquentes</strong><span>Nouveaux contenus chaque semaine : zones, quêtes, items et mécaniques inédites.</span></div>
+        </li>
+        <li class="whyjoin__item">
+          <div class="whyjoin__check">✓</div>
+          <div><strong>Serveur optimisé & stable</strong><span>Infrastructure performante avec une latence minimale, même aux heures de pointe.</span></div>
+        </li>
+        <li class="whyjoin__item">
+          <div class="whyjoin__check">✓</div>
+          <div><strong>Communauté soudée</strong><span>Plus de 300 joueurs sur le Discord, des clans, des alliances, des amitiés durables.</span></div>
+        </li>
+        <li class="whyjoin__item">
+          <div class="whyjoin__check">✓</div>
+          <div><strong>Gratuit & 100% équitable</strong><span>Rejoindre le serveur est totalement gratuit. La boutique ne vend que des cosmétiques. Zéro pay-to-win.</span></div>
+        </li>
+      </ul>
+    </div>
+    <div class="whyjoin__visual">
+      <div class="whyjoin__visual-placeholder">
+        <img src="minecraft-anticheat.jpg" alt="Serveur Syra SMP" onerror="this.outerHTML='<div class=\'whyjoin__visual-placeholder\'><div class=\'big-icon\'>🏰</div><p>Syra SMP — Saison 1</p></div>'">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="about">
+  <div class="about__inner">
+    <div class="about__card">
+      <div>
+        <h2>Salut, c'est l'équipe Syra 👋</h2>
+        <p>On a lancé Syra parce qu'on en avait marre des serveurs sans âme. Des serveurs où le staff disparaît, où les cheaters règnent, et où t'es seul face à une map vide.</p>
+        <p>Alors on a tout refait. Un serveur conçu avec soin, des events pensés pour la communauté, et un staff qui joue avec vous.</p>
+        <p>Pas de bullshit. Pas de pay-to-win. Juste du bon Minecraft.</p>
+        <a href="equipe.htm" class="btn btn--secondary" style="margin-top:1rem">Rencontrer l'équipe →</a>
+      </div>
+      <div class="about__img">
+        <img src="LogoSMP.jpg" alt="Équipe Syra" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;height:100%\'><div style=\'font-size:5rem\'>⛏️</div><p style=\'color:var(--c-muted);font-size:0.85rem\'>Syra SMP Team</p></div>'">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery">
+  <div class="gallery__header">
+    <span class="eyebrow">Vie sur le serveur</span>
+    <h2 class="section-title">Construisez.<br>Explorez. Réglez vos comptes.</h2>
+  </div>
+  <div class="gallery__grid">
+    <div class="gallery__item">🏰</div>
+    <div class="gallery__item">⚔️</div>
+    <div class="gallery__item">🌋</div>
+    <div class="gallery__item">🏪</div>
+    <div class="gallery__item">🛕</div>
+    <div class="gallery__item">🎯</div>
+    <div class="gallery__item">🌊</div>
+    <div class="gallery__item">🎪</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="ftr">
+  <div class="ftr__inner">
+    <div class="ftr__top">
+      <div class="ftr__headline">
+        <span class="anim-text" id="footerAnim">Nouveautés</span> dans ta boîte mail.
+      </div>
+      <p class="ftr__sub">Events, mises à jour, drama de serveur. Promis, on spam pas.</p>
+      <div class="ftr__form">
+        <input type="email" class="ftr__input" placeholder="ton@email.fr" />
+        <button class="btn btn--primary">S'inscrire</button>
+      </div>
+      <p class="ftr__note">On vous envoie que ce qui vaut le coup. Si c'est nul — dites-le nous, on aime le feedback.</p>
+    </div>
+
+    <div class="ftr__grid">
+      <div class="ftr__col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.htm">Accueil</a></li>
+          <li><a href="serveur.htm">Serveur</a></li>
+          <li><a href="reglement.htm">Règlement</a></li>
+          <li><a href="boutique.htm">Boutique</a></li>
+        </ul>
+      </div>
+      <div class="ftr__col">
+        <h4>Découvrir</h4>
+        <ul>
+          <li><a href="carte.htm">Carte</a></li>
+          <li><a href="equipe.htm">Équipe</a></li>
+          <li><a href="actus.htm">Actus</a></li>
+          <li><a href="classement.htm">Classement</a></li>
+        </ul>
+      </div>
+      <div class="ftr__col">
+        <h4>Communauté</h4>
+        <ul>
+          <li><a href="https://discord.gg/PbntRm5sNy" target="_blank">Discord</a></li>
+          <li><a href="contact.htm">Support</a></li>
+          <li><a href="contact.htm">FAQ</a></li>
+          <li><a href="serveur.htm">Status</a></li>
+        </ul>
+      </div>
+      <div class="ftr__col">
+        <h4>Suivez-nous</h4>
+        <div class="ftr__socials">
+          <a href="https://discord.gg/PbntRm5sNy" target="_blank" class="ftr__social" title="Discord"><i class="fab fa-discord"></i></a>
+          <a href="https://youtube.com/@LeNoobInconnu" target="_blank" class="ftr__social" title="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="https://twitter.com/LeNoobInconnu" target="_blank" class="ftr__social" title="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="https://twitch.tv/LenoobInconnu" target="_blank" class="ftr__social" title="Twitch"><i class="fab fa-twitch"></i></a>
+        </div>
+        <p style="color:var(--c-muted);font-size:0.78rem;margin-top:0.5rem">@SyraSMP partout 🎮</p>
+      </div>
+    </div>
+
+    <div class="ftr__bottom">
+      <div class="ftr__legal">
+        <span>⚖️ Dumb Legal</span>
+        <a href="#">Politique de confidentialité</a>
+        <a href="#">CGU</a>
+      </div>
+      <div class="ftr__copy">© 2025 <span>Syra SMP</span> — "It's not the size of the pickaxe, it's the size of the miner." ~ Inconnu</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav burger
+  document.getElementById('burger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  // Copy IP
+  function copyIP(ip, btn) {
+    navigator.clipboard.writeText(ip).then(() => {
+      btn.innerHTML = '<i class="fas fa-check"></i> Copié !';
+      const confirm = btn.nextElementSibling;
+      confirm.classList.add('show');
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-copy"></i> Copier l\'IP';
+        confirm.classList.remove('show');
+      }, 2000);
+    });
+  }
+
+  // Discord stats
+  async function updateDiscordStats() {
+    const serverId = "1097456982274883614";
+    try {
+      const response = await fetch(`https://discord.com/api/guilds/${serverId}/widget.json`);
+      const data = await response.json();
+      const onlineCount = data.members.filter(m => m.status === "online").length;
+      let vocalCount = 0;
+      if (data.channels) {
+        data.channels.forEach(channel => {
+          if (channel.type === 2 && channel.members) vocalCount += channel.members.length;
+        });
+      }
+      document.getElementById("discordOnline").innerText = onlineCount;
+      document.getElementById("discordVocal").innerText = vocalCount;
+      document.getElementById("discordStatus").innerText = "🟢 En ligne";
+    } catch (e) {
+      document.getElementById("discordOnline").innerText = "-";
+      document.getElementById("discordVocal").innerText = "-";
+      document.getElementById("discordStatus").innerText = "🔴 Hors ligne";
+    }
+  }
+  updateDiscordStats();
+  setInterval(updateDiscordStats, 60000);
+
+  // Footer text animation
+  const footerTexts = ["Nouveautés", "Events", "Actus croustillantes", "Dramas de guilde"];
+  let fi = 0;
+  setInterval(() => {
+    fi = (fi + 1) % footerTexts.length;
+    const el = document.getElementById('footerAnim');
+    el.style.opacity = '0';
+    setTimeout(() => { el.textContent = footerTexts[fi]; el.style.opacity = '1'; }, 300);
+  }, 2500);
+  document.getElementById('footerAnim').style.transition = 'opacity 0.3s';
+</script>
+</body>
+</html>

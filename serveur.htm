@@ -4,610 +4,278 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Syra SMP – Le Serveur</title>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/jpeg" href="LogoSMP.jpg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
-      --green: #ffffff;
-      --blue: #ffffff;
-      --bg: #0d1117;
-      --bg2: #161b22;
-      --bg3: #1c2333;
-      --text: #e6edf3;
-      --muted: #8b949e;
-      --border: rgba(255,255,255,0.06);
-      --glow-green: 0 0 20px rgba(46,204,113,0.3);
-      --glow-blue: 0 0 20px rgba(52,152,219,0.3);
+      --bg: #090c10;
+      --surface: #10141a;
+      --surface-2: #151a21;
+      --line: #232a33;
+      --line-soft: #1a1f26;
+      --text: #edf1f3;
+      --muted: #8996a3;
+      --accent: #5fc9de;
+      --accent-dim: rgba(95,201,222,0.12);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      background-color: var(--bg);
+      background: var(--bg);
       color: var(--text);
-      font-family: 'Exo 2', sans-serif;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
       min-height: 100vh;
-      background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('minecraft-bg.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
     }
+    a { color: inherit; }
+    .mono { font-family: 'IBM Plex Mono', monospace; }
 
     /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(13,17,23,0.85);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      padding: 0;
-    }
-    .nav-inner {
-      max-width: 100%; margin: 0;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 60px; padding: 0 2rem;
-    }
-    .nav-logo {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.7rem;
-      background: linear-gradient(90deg, var(--green), var(--blue));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      text-decoration: none; white-space: nowrap;
-      display: flex; align-items: center; height: 40px; margin: 0;
-    }
-    .logo-img { height: 40px; width: auto; display: block; }
-    .nav-links { display: flex; gap: 0.25rem; list-style: none; flex-wrap: wrap; margin: 0; }
-    .nav-links a {
-      color: var(--muted); text-decoration: none;
-      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;
-      padding: 0.4rem 0.75rem; border-radius: 6px;
-      transition: color 0.2s, background 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-    .nav-links a.active { color: #3498db; background: rgba(52,152,219,0.1); }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(9,12,16,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 2rem; }
+    .nav-logo { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; }
+    .logo-img { height: 42px; width: auto; display: block; }
+    .nav-logo-text { display: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; position: relative; padding: 0.25rem 0; transition: color 0.2s; }
+    .nav-links a::after { content: ''; position: absolute; left: 0; right: 100%; bottom: -1px; height: 1px; background: var(--accent); transition: right 0.25s ease; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-links a:hover::after, .nav-links a.active::after { right: 0; }
     .nav-burger { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
-    .nav-burger span { display: block; width: 22px; height: 2px; background: var(--text); margin: 5px 0; border-radius: 2px; transition: 0.3s; }
-    @media(max-width:768px) {
+    .nav-burger span { display: block; width: 20px; height: 1px; background: var(--text); margin: 5px 0; }
+    @media(max-width:860px) {
       .nav-burger { display: block; }
-      .nav-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: rgba(13,17,23,0.97); padding: 1rem 2rem; gap: 0.5rem; border-bottom: 1px solid var(--border); }
+      .nav-links { display: none; flex-direction: column; gap: 1rem; position: absolute; top: 64px; left: 0; right: 0; background: var(--bg); padding: 1.5rem 2rem; border-bottom: 1px solid var(--line); }
       .nav-links.open { display: flex; }
     }
 
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes slideInLeft { from{opacity:0;transform:translateX(-60px)} to{opacity:1;transform:translateX(0)} }
-    @keyframes slideInRight { from{opacity:0;transform:translateX(60px)} to{opacity:1;transform:translateX(0)} }
-    @keyframes scaleIn { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
-    @keyframes floatUp { 0%{opacity:0;transform:translateY(40px)} 100%{opacity:1;transform:translateY(0)} }
-    @keyframes bounceIn { 0%{opacity:0;transform:scale(0) rotate(-180deg)} 50%{transform:scale(1.1)} 100%{opacity:1;transform:scale(1) rotate(0)} }
-    @keyframes popIn { 0%{opacity:0;transform:scale(0) rotate(-180deg)} 70%{transform:scale(1.2) rotate(20deg)} 100%{opacity:1;transform:scale(1) rotate(0)} }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 20px rgba(52,152,219,0.4), inset 0 0 10px rgba(52,152,219,0.1); }
-      50% { box-shadow: 0 0 40px rgba(52,152,219,0.7), inset 0 0 20px rgba(52,152,219,0.2); }
-    }
-
-    /* ── SCROLL REVEAL ── */
-    .scroll-reveal { opacity:0; transform:translateY(40px); transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
-    .scroll-reveal.in-view { opacity:1; transform:translateY(0); }
-    .scroll-reveal.stagger-1 { transition-delay:0.1s; }
-    .scroll-reveal.stagger-2 { transition-delay:0.2s; }
-    .scroll-reveal.stagger-3 { transition-delay:0.3s; }
-
     /* ── PAGE HEADER ── */
-    .page-header {
-      padding: 5rem 2rem 3rem; max-width: 1200px; margin: auto;
-      display: flex; flex-direction: column; gap: 1rem;
-      position: relative;
-    }
-    .page-header::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(52,152,219,0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .section-tag {
-      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em;
-      text-transform: uppercase; color: #3498db; margin-bottom: 0.25rem;
-      animation: slideInLeft 0.6s ease both;
-    }
-    .page-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: clamp(1rem, 3vw, 1.5rem); line-height: 1.8;
-      animation: fadeUp 0.6s 0.15s ease both;
-    }
-    .page-sub {
-      color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 600px;
-      animation: fadeUp 0.6s 0.3s ease both;
-    }
+    .page-header { padding: 4.5rem 2rem 3.5rem; max-width: 1100px; margin: auto; border-bottom: 1px solid var(--line); }
+    .section-tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.9rem; }
+    .page-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; margin-bottom: 1rem; }
+    .page-sub { color: var(--muted); font-size: 0.95rem; line-height: 1.7; max-width: 560px; }
 
-    /* ── MAIN ── */
-    main { max-width: 1200px; margin: auto; padding: 0 2rem 5rem; display: flex; flex-direction: column; gap: 4rem; }
+    main { max-width: 1100px; margin: auto; padding: 0 2rem 6rem; display: flex; flex-direction: column; gap: 5rem; }
+    section { padding-top: 5rem; }
+    section:first-of-type { padding-top: 0; }
 
-    /* ── SECTION ── */
-    section { padding: 0; }
-    .section-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-      line-height: 1.8; margin-bottom: 2rem; color: var(--text);
-    }
+    .section-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(1.3rem, 2.6vw, 1.7rem); margin-bottom: 2.25rem; }
 
-    /* ── TYPE BADGES ── */
-    .type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
-    .type-badge {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 16px; padding: 2rem 1.5rem; text-align: center;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative; overflow: hidden;
-      animation: floatUp 0.8s ease both;
-    }
-    .type-badge:nth-child(1) { animation-delay: 0.1s; }
-    .type-badge:nth-child(2) { animation-delay: 0.2s; }
-    .type-badge:nth-child(3) { animation-delay: 0.3s; }
-    .type-badge:nth-child(4) { animation-delay: 0.4s; }
-    .type-badge::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(52,152,219,0.05) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .type-badge:hover {
-      border-color: rgba(52,152,219,0.5);
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 20px 50px rgba(52,152,219,0.2);
-    }
-    .type-badge.highlight { border-color: rgba(52,152,219,0.4); background: rgba(52,152,219,0.06); }
-    .type-icon { font-size: 2.5rem; display: block; margin-bottom: 1rem; color: #3498db; width: 100%; animation: bounceIn 0.8s cubic-bezier(0.68,-0.55,0.265,1.55) both; }
-    .type-badge:nth-child(1) .type-icon { animation-delay: 0.2s; }
-    .type-badge:nth-child(2) .type-icon { animation-delay: 0.3s; }
-    .type-badge:nth-child(3) .type-icon { animation-delay: 0.4s; }
-    .type-badge:nth-child(4) .type-icon { animation-delay: 0.5s; }
-    .type-name { font-family: 'Press Start 2P', monospace; font-size: 0.6rem; line-height: 1.8; color: #3498db; margin-bottom: 0.75rem; }
-    .type-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+    /* ── TYPE GRID (identique aux feature-cards de l'accueil) ── */
+    .type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    @media(max-width:860px){ .type-grid{ grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:520px){ .type-grid{ grid-template-columns:1fr; } }
+    .type-badge { background: var(--surface); padding: 2rem 1.5rem; transition: background 0.25s; position: relative; }
+    .type-badge:hover { background: var(--surface-2); }
+    .type-badge.highlight::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background: var(--accent); }
+    .type-icon { font-size: 1.2rem; display: block; margin-bottom: 1.5rem; color: var(--accent); }
+    .type-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem; }
+    .type-desc { color: var(--muted); font-size: 0.82rem; line-height: 1.65; }
 
-    /* ── DESCRIPTION CARD ── */
-    .desc-card {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 16px; padding: 2.5rem;
-      position: relative; overflow: hidden;
-      transition: border-color 0.3s;
-    }
-    .desc-card::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 0% 0%, rgba(52,152,219,0.07) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .desc-card:hover { border-color: rgba(52,152,219,0.25); }
-    .desc-card h2 {
-      font-family: 'Press Start 2P', monospace; font-size: 0.85rem;
-      line-height: 1.8; color: #3498db; margin-bottom: 1.25rem;
-    }
-    .desc-card p { color: var(--muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem; }
+    /* ── DESCRIPTION ── */
+    .desc-card { border: 1px solid var(--line); padding: 2.5rem; }
+    .desc-card h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.3rem; color: var(--accent); margin-bottom: 1.5rem; }
+    .desc-card p { color: var(--muted); font-size: 0.92rem; line-height: 1.85; margin-bottom: 1.1rem; }
     .desc-card p:last-child { margin-bottom: 0; }
-    .desc-card strong { color: var(--text); }
+    .desc-card strong { color: var(--text); font-weight: 500; }
 
-    /* ── FEATURES GRID ── */
-    .features-block .section-title { color: var(--text); }
-    .features-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    @media(max-width:640px){ .features-two-col{ grid-template-columns:1fr; } }
-    .feat-item {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.25rem 1.5rem;
-      display: flex; align-items: flex-start; gap: 1rem;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative; overflow: hidden;
-      animation: fadeUp 0.6s ease both;
-    }
-    .feat-item:nth-child(1) { animation-delay: 0.05s; }
-    .feat-item:nth-child(2) { animation-delay: 0.1s; }
-    .feat-item:nth-child(3) { animation-delay: 0.15s; }
-    .feat-item:nth-child(4) { animation-delay: 0.2s; }
-    .feat-item:nth-child(5) { animation-delay: 0.25s; }
-    .feat-item:nth-child(6) { animation-delay: 0.3s; }
-    .feat-item:nth-child(7) { animation-delay: 0.35s; }
-    .feat-item:nth-child(8) { animation-delay: 0.4s; }
-    .feat-item:hover {
-      border-color: rgba(52,152,219,0.35);
-      transform: translateY(-4px);
-      box-shadow: 0 10px 30px rgba(52,152,219,0.12);
-    }
-    .feat-dot {
-      width: 10px; height: 10px; min-width: 10px; border-radius: 50%;
-      background: #3498db; margin-top: 6px;
-      animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
-    }
-    .feat-info strong { font-size: 0.9rem; font-weight: 700; display: block; margin-bottom: 0.3rem; color: var(--text); }
-    .feat-info span { color: var(--muted); font-size: 0.82rem; line-height: 1.6; }
+    /* ── FEATURES LIST (deux colonnes, filets fins) ── */
+    .features-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3rem; }
+    @media(max-width:700px){ .features-two-col{ grid-template-columns:1fr; gap:0; } }
+    .feat-item { display: flex; align-items: flex-start; gap: 1.1rem; padding: 1.25rem 0; border-top: 1px solid var(--line-soft); }
+    .features-two-col .feat-item:nth-child(1),
+    .features-two-col .feat-item:nth-child(2) { border-top: none; }
+    @media(max-width:700px){ .features-two-col .feat-item:nth-child(2) { border-top: 1px solid var(--line-soft); } }
+    .feat-index { font-family: 'IBM Plex Mono', monospace; color: var(--accent); font-size: 0.75rem; margin-top: 0.2rem; min-width: 24px; }
+    .feat-info strong { font-size: 0.9rem; font-weight: 600; display: block; margin-bottom: 0.35rem; }
+    .feat-info span { color: var(--muted); font-size: 0.82rem; line-height: 1.65; }
 
     /* ── IP SECTION ── */
-    .ip-section {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 16px; padding: 2.5rem;
-      position: relative; overflow: hidden;
-    }
-    .ip-section::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 100% 100%, rgba(52,152,219,0.06) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .ip-section h2 {
-      font-family: 'Press Start 2P', monospace; font-size: 0.85rem;
-      line-height: 1.8; color: #3498db; margin-bottom: 2rem;
-    }
-    .ip-tabs { display: flex; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap; }
-    .ip-tab {
-      padding: 0.6rem 1.25rem; background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border); border-radius: 8px;
-      font-size: 0.8rem; font-weight: 600; color: var(--muted);
-      cursor: pointer; transition: all 0.25s; font-family: 'Exo 2', sans-serif;
-      display: flex; align-items: center; gap: 0.6rem;
-    }
-    .ip-tab:hover { background: rgba(255,255,255,0.05); border-color: rgba(52,152,219,0.2); color: var(--text); }
-    .ip-tab.active { background: rgba(52,152,219,0.15); border-color: rgba(52,152,219,0.4); color: #3498db; }
+    .ip-section { border: 1px solid var(--line); padding: 2.5rem; }
+    .ip-tabs { display: flex; gap: 2rem; margin-bottom: 2.25rem; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    .ip-tab { background: none; border: none; cursor: pointer; padding: 0 0 0.9rem; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 0.55rem; position: relative; margin-bottom: -1px; }
+    .ip-tab::after { content:''; position:absolute; left:0; right:100%; bottom:-1px; height:1px; background: var(--accent); transition: right 0.25s ease; }
+    .ip-tab:hover { color: var(--text); }
+    .ip-tab.active { color: var(--accent); }
+    .ip-tab.active::after { right: 0; }
     .ip-content { display: none; }
     .ip-content.active { display: block; }
-    .ip-info { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
-    .ip-info-row { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
-    .ip-info-row:last-child { margin-bottom: 0; }
-    .ip-label-left { font-size: 0.8rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; min-width: 100px; }
-    .ip-value {
-      font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: #3498db;
-      padding: 0.75rem 1rem;
-      background: rgba(52,152,219,0.08); border: 1px solid rgba(52,152,219,0.2);
-      border-radius: 6px; flex: 1; word-break: break-all;
-      display: flex; align-items: center; justify-content: space-between;
-      transition: border-color 0.2s;
-    }
-    .ip-value:hover { border-color: rgba(52,152,219,0.4); }
-    .ip-copy-mini {
-      padding: 0.5rem 1rem;
-      background: rgba(52,152,219,0.15); border: 1px solid rgba(52,152,219,0.35);
-      color: #3498db; font-size: 0.75rem; font-weight: 700; border-radius: 4px;
-      cursor: pointer; transition: all 0.25s; white-space: nowrap;
-      font-family: 'Exo 2', sans-serif;
-    }
-    .ip-copy-mini:hover { background: rgba(52,152,219,0.25); border-color: rgba(52,152,219,0.6); transform: scale(1.05); }
-    .ip-copy-mini.copied { color: #2ecc71; background: rgba(46,204,113,0.15); border-color: rgba(46,204,113,0.35); }
-
-
+    .ip-info-row { display: flex; align-items: center; gap: 1.5rem; padding: 1rem 0; border-top: 1px solid var(--line-soft); }
+    .ip-info-row:first-child { border-top: none; padding-top: 0; }
+    .ip-label-left { font-size: 0.7rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; min-width: 100px; }
+    .ip-value { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--accent); border: 1px solid var(--line); padding: 0.7rem 1rem; flex: 1; word-break: break-all; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .ip-copy-mini { padding: 0.5rem 1rem; background: none; border: 1px solid var(--line); color: var(--muted); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; white-space: nowrap; font-family: 'IBM Plex Sans', sans-serif; }
+    .ip-copy-mini:hover { border-color: var(--accent); color: var(--accent); }
+    .ip-copy-mini.copied { color: var(--accent); border-color: var(--accent); }
 
     /* ── FOOTER ── */
-    footer {
-      background: var(--bg2); border-top: 1px solid var(--border);
-      padding: 3rem 2rem;
-      color: var(--muted); font-size: 0.8rem;
-    }
-    footer span { color: #3498db; }
-    .footer-inner { max-width: 1200px; margin: auto; }
-    .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
-    .footer-section h4 { color: #3498db; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
-    .footer-section ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-    .footer-section ul li a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
-    .footer-section ul li a:hover { color: #3498db; }
-    .footer-logo { text-align: center; margin-bottom: 1.5rem; }
-    .footer-logo img { height: 60px; width: auto; margin-bottom: 0.5rem; }
-    .footer-logo p { color: var(--muted); font-size: 0.85rem; }
-    .footer-socials { display: flex; justify-content: center; gap: 1.5rem; margin: 2rem 0; }
-    .footer-socials a {
-      width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-      background: rgba(52,152,219,0.1); border: 1px solid rgba(52,152,219,0.3);
-      border-radius: 8px; color: #3498db; font-size: 1.2rem;
-      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
-      animation: popIn 0.6s ease both;
-    }
-    .footer-socials a:nth-child(1) { animation-delay: 0.1s; }
-    .footer-socials a:nth-child(2) { animation-delay: 0.2s; }
-    .footer-socials a:nth-child(3) { animation-delay: 0.3s; }
-    .footer-socials a:nth-child(4) { animation-delay: 0.4s; }
-    .footer-socials a:hover {
-      background: rgba(52,152,219,0.3); border-color: rgba(52,152,219,0.8);
-      transform: translateY(-6px) rotate(10deg);
-      box-shadow: 0 10px 25px rgba(52,152,219,0.3);
-    }
-    .footer-bottom { border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; }
-    .footer-bottom p { margin: 0.3rem 0; }
+    footer { background: var(--surface); border-top: 1px solid var(--line); padding: 4rem 2rem 2rem; color: var(--muted); font-size: 0.82rem; }
+    .footer-inner { max-width: 1100px; margin: auto; }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 3rem; margin-bottom: 3.5rem; }
+    .footer-brand { max-width: 280px; }
+    .footer-brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1rem; color: var(--text); margin-bottom: 0.75rem; }
+    .footer-content { display: grid; grid-template-columns: repeat(2, auto); gap: 3rem; }
+    .footer-section h4 { color: var(--text); font-size: 0.72rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .footer-section ul { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .footer-section ul li a { color: var(--muted); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+    .footer-section ul li a:hover { color: var(--accent); }
+    .footer-socials { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+    .footer-socials a { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); color: var(--muted); font-size: 0.95rem; transition: all 0.2s; }
+    .footer-socials a:hover { border-color: var(--accent); color: var(--accent); }
+    .footer-bottom { border-top: 1px solid var(--line); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+    .footer-bottom span { color: var(--text); }
   </style>
 </head>
 <body id="page-serveur">
 
 <nav>
   <div class="nav-inner">
-    <a class="nav-logo" href="index.htm"><img src="LogoSMP.jpg" alt="Syra SMP" class="logo-img"></a>
-    <button class="nav-burger" id="burger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    <a class="nav-logo" href="index.htm">
+      <img src="LogoSMP.jpg" alt="Syra SMP" class="logo-img">
+    </a>
+    <button class="nav-burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
     <ul class="nav-links" id="navLinks">
       <li><a href="index.htm">Accueil</a></li>
       <li><a href="serveur.htm" class="active">Serveur</a></li>
       <li><a href="reglement.htm">Règlement</a></li>
-      <li><a href="boutique.htm">Boutique</a></li>
-      <li><a href="carte.htm">Carte</a></li>
-      <li><a href="equipe.htm">Équipe</a></li>
-      <li><a href="actus.htm">Actus</a></li>
-      <li><a href="classement.htm">Classement</a></li>
-      <li><a href="contact.htm">Contact</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- PAGE HEADER -->
 <div class="page-header">
   <div class="section-tag">Présentation</div>
   <h1 class="page-title">Le Serveur</h1>
-  <p class="page-sub">Découvrez ce qui rend Syra SMP unique : une aventure unique et immersive, conçue par le studio LeNoobInconnu STUDIO</p>
+  <p class="page-sub">Découvrez ce qui rend Syra SMP unique : une aventure multi-mode immersive, conçue par des passionnés pour des passionnés.</p>
 </div>
-
-
 
 <main>
 
   <!-- TYPE DE SERVEUR -->
-  <section class="scroll-reveal">
-    <div class="section-tag">L'objectif</div>
-    <h2 class="section-title">Ce que vous trouverez ici</h2>
+  <section>
     <div class="type-grid">
       <div class="type-badge highlight">
         <i class="fas fa-globe type-icon"></i>
-        <div class="type-name">Survivre</div>
-        <p class="type-desc">Mine, équipe‑toi, affronte tes ennemis ou bâtis ton empire et deviens le plus riche</p>
+        <div class="type-name">Survie</div>
+        <p class="type-desc">Mode principal. Exploration, construction, combat et progression dans un monde vanilla amélioré.</p>
       </div>
       <div class="type-badge">
         <i class="fas fa-mask type-icon"></i>
-        <div class="type-name">Farm</div>
-        <p class="type-desc">Construis des farms ou récolte toutes les ressources précieuses et deviens le plus riche.</p>
+        <div class="type-name">Semi-RP</div>
+        <p class="type-desc">Plongez dans un univers narratif avec factions, lore évolutif et intrigues entre joueurs.</p>
       </div>
       <div class="type-badge">
         <i class="fas fa-gamepad type-icon"></i>
-        <div class="type-name">Évente</div>
-        <p class="type-desc">Joue et gagne des récompenses.</p>
+        <div class="type-name">Mini-Jeux</div>
+        <p class="type-desc">Bedwars, Skyblock, Parkour, Murder Mystery… Des dizaines de modes pour se détendre entre amis.</p>
       </div>
       <div class="type-badge">
-        <i class="fas fa-fist-raised type-icon"></i>
-        <div class="type-name">WarZone</div>
+        <i class="fas fa-crosshairs type-icon"></i>
+        <div class="type-name">PvP Arena</div>
         <p class="type-desc">Affrontez les meilleurs joueurs dans des arènes dédiées avec classement et récompenses hebdomadaires.</p>
       </div>
     </div>
   </section>
 
   <!-- DESCRIPTION -->
-  <div class="desc-card scroll-reveal">
-    <h2>Notre histoire</h2>
-    <p>Né d'une poignée d'amis passionnés de Minecraft, <strong>Syra SMP</strong> est aujourd'hui l'une des communautés les plus actives de la scène francophone. Nous avons construit chaque système à la main — quêtes, économie, métiers — pour créer quelque chose qui n'existait nulle part ailleurs.</p>
-    <p>Notre philosophie est simple : <strong>le jeu doit rester fun</strong>. Pas de pay-to-win, pas de lag, pas de drama. Juste une aventure épique partagée avec des milliers de joueurs qui, comme vous, veulent vivre des moments mémorables.</p>
-    <p>Que vous soyez bâtisseur dans l'âme, guerrier acharné ou marchand rusé, il y a une place pour vous ici.</p>
-  </div>
+  <section>
+    <div class="desc-card">
+      <h2>Notre histoire</h2>
+      <p>Né en 2022 d'une poignée d'amis passionnés de Minecraft, <strong>Syra SMP</strong> est aujourd'hui l'une des communautés les plus actives de la scène francophone. Nous avons construit chaque système à la main — quêtes, économie, métiers — pour créer quelque chose qui n'existait nulle part ailleurs.</p>
+      <p>Notre philosophie est simple : <strong>le jeu doit rester fun</strong>. Pas de pay-to-win, pas de lag, pas de drama. Juste une aventure épique partagée avec des milliers de joueurs qui, comme vous, veulent vivre des moments mémorables.</p>
+      <p>Que vous soyez bâtisseur dans l'âme, guerrier acharné ou marchand rusé, il y a une place pour vous ici.</p>
+    </div>
+  </section>
 
   <!-- FONCTIONNALITÉS -->
-  <div class="features-block scroll-reveal">
-    <div class="section-tag">Gameplay</div>
-    <h2 class="section-title">Fonctionnalités Principales</h2>
+  <section>
+    <h2 class="section-title">Fonctionnalités principales</h2>
     <div class="features-two-col">
-      <div class="feat-item">
-        <div class="feat-dot"></div>
-        <div class="feat-info">
-          <strong>Système de Quêtes</strong>
-          <span>Plus de 200 quêtes scénarisées avec dialogue, objectifs multiples et récompenses rares.</span>
-        </div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-dot"></div>
-        <div class="feat-info">
-          <strong>Métiers & Professions</strong>
-          <span>Forgeron, Alchimiste, Fermier, Pêcheur, Chasseur… Maîtrisez votre art et devenez incontournable.</span>
-        </div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-dot"></div>
-        <div class="feat-info">
-          <strong>Économie Joueur</strong>
-          <span>Marché en temps réel, boutiques personnalisées, enchères et système de monnaie interne.</span>
-        </div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-dot"></div>
-        <div class="feat-info">
-          <strong>Donjons Procéduraux</strong>
-          <span>Des donjons générés aléatoirement, à solo ou en groupe, avec boss épiques et loot unique.</span>
-        </div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-dot"></div>
-        <div class="feat-info">
-          <strong>PvP Équilibré</strong>
-          <span>Zones PvP opt-in, arènes classées, tournois mensuels avec prix en jeu et sur Discord.</span>
-        </div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-dot"></div>
-        <div class="feat-info">
-          <strong>PvE Avancé</strong>
-          <span>Mobs custom, boss de monde, invasions aléatoires et événements nocturnes spéciaux.</span>
-        </div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-dot"></div>
-        <div class="feat-info">
-          <strong>Guildes & Factions</strong>
-          <span>Créez ou rejoignez une guilde, combattez pour le territoire, montez dans le classement.</span>
-        </div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-dot"></div>
-        <div class="feat-info">
-          <strong>Maisons & Terrains</strong>
-          <span>Protégez vos constructions avec notre système de claim intuitif et personnalisable.</span>
-        </div>
-      </div>
+      <div class="feat-item"><span class="feat-index">01</span><div class="feat-info"><strong>Système de quêtes</strong><span>Plus de 200 quêtes scénarisées avec dialogue, objectifs multiples et récompenses rares.</span></div></div>
+      <div class="feat-item"><span class="feat-index">02</span><div class="feat-info"><strong>Métiers & professions</strong><span>Forgeron, alchimiste, fermier, pêcheur, chasseur… maîtrisez votre art et devenez incontournable.</span></div></div>
+      <div class="feat-item"><span class="feat-index">03</span><div class="feat-info"><strong>Économie joueur</strong><span>Marché en temps réel, boutiques personnalisées, enchères et système de monnaie interne.</span></div></div>
+      <div class="feat-item"><span class="feat-index">04</span><div class="feat-info"><strong>Donjons procéduraux</strong><span>Des donjons générés aléatoirement, à solo ou en groupe, avec boss épiques et loot unique.</span></div></div>
+      <div class="feat-item"><span class="feat-index">05</span><div class="feat-info"><strong>PvP équilibré</strong><span>Zones PvP opt-in, arènes classées, tournois mensuels avec prix en jeu et sur Discord.</span></div></div>
+      <div class="feat-item"><span class="feat-index">06</span><div class="feat-info"><strong>PvE avancé</strong><span>Mobs custom, boss de monde, invasions aléatoires et événements nocturnes spéciaux.</span></div></div>
+      <div class="feat-item"><span class="feat-index">07</span><div class="feat-info"><strong>Guildes & factions</strong><span>Créez ou rejoignez une guilde, combattez pour le territoire, montez dans le classement.</span></div></div>
+      <div class="feat-item"><span class="feat-index">08</span><div class="feat-info"><strong>Maisons & terrains</strong><span>Protégez vos constructions avec notre système de claim intuitif et personnalisable.</span></div></div>
     </div>
-  </div>
+  </section>
 
   <!-- IP SECTION -->
-  <div class="ip-section scroll-reveal">
-    <h2>Connexion au Serveur</h2>
+  <section>
+    <div class="ip-section">
+      <h2 class="section-title" style="margin-bottom:1.75rem;">Connexion au serveur</h2>
 
-    <div class="ip-tabs">
-      <button class="ip-tab active" onclick="switchTab('pc', this)"><i class="fas fa-desktop"></i> Ordinateur</button>
-      <button class="ip-tab" onclick="switchTab('phone', this)"><i class="fas fa-mobile-alt"></i> Mobile</button>
-      <button class="ip-tab" onclick="switchTab('switch', this)"><i class="fas fa-gamepad"></i> Switch</button>
-      <button class="ip-tab" onclick="switchTab('xbox', this)"><i class="fas fa-play"></i> Xbox & PS</button>
-    </div>
+      <div class="ip-tabs">
+        <button class="ip-tab active" onclick="switchTab('pc', event)"><i class="fas fa-desktop"></i> Ordinateur</button>
+        <button class="ip-tab" onclick="switchTab('phone', event)"><i class="fas fa-mobile-alt"></i> Mobile</button>
+        <button class="ip-tab" onclick="switchTab('switch', event)"><i class="fas fa-gamepad"></i> Switch</button>
+        <button class="ip-tab" onclick="switchTab('xbox', event)"><i class="fas fa-play"></i> Xbox & PS</button>
+      </div>
 
-    <!-- PC -->
-    <div id="pc" class="ip-content active">
-      <div class="ip-info">
-        <div class="ip-info-row">
-          <div class="ip-label-left">Edition</div>
-          <div class="ip-value"><span>Java</span></div>
-        </div>
-        <div class="ip-info-row">
-          <div class="ip-label-left">Adresse</div>
-          <div style="flex:1;">
-            <div class="ip-value">
-              <span>91.197.6.19:28146</span>
-              <button class="ip-copy-mini" onclick="copyValue('91.197.6.19:28146', this)">Copier</button>
-            </div>
-          </div>
-        </div>
-        <div class="ip-info-row">
-          <div class="ip-label-left">Port</div>
-          <div style="flex:1;">
-            <div class="ip-value">
-              <span>Aucun</span>
-              <button class="ip-copy-mini" onclick="copyValue('', this)">Copier</button>
-            </div>
-          </div>
-        </div>
+      <!-- PC TAB -->
+      <div id="pc" class="ip-content active">
+        <div class="ip-info-row"><div class="ip-label-left">Édition</div><div class="ip-value"><span>Java</span></div></div>
+        <div class="ip-info-row"><div class="ip-label-left">Adresse</div><div class="ip-value"><span>play.syrasmp.fr</span><button class="ip-copy-mini" onclick="copyValue('play.syrasmp.fr', this)">Copier</button></div></div>
+        <div class="ip-info-row"><div class="ip-label-left">Port</div><div class="ip-value"><span>25565 (défaut)</span><button class="ip-copy-mini" onclick="copyValue('25565', this)">Copier</button></div></div>
+      </div>
+
+      <!-- PHONE TAB -->
+      <div id="phone" class="ip-content">
+        <div class="ip-info-row"><div class="ip-label-left">Édition</div><div class="ip-value"><span>Bedrock</span></div></div>
+        <div class="ip-info-row"><div class="ip-label-left">Adresse</div><div class="ip-value"><span>bedrock.syrasmp.fr</span><button class="ip-copy-mini" onclick="copyValue('bedrock.syrasmp.fr', this)">Copier</button></div></div>
+        <div class="ip-info-row"><div class="ip-label-left">Port</div><div class="ip-value"><span>19132</span><button class="ip-copy-mini" onclick="copyValue('19132', this)">Copier</button></div></div>
+      </div>
+
+      <!-- SWITCH TAB -->
+      <div id="switch" class="ip-content">
+        <div class="ip-info-row"><div class="ip-label-left">Édition</div><div class="ip-value"><span>Bedrock</span></div></div>
+        <div class="ip-info-row"><div class="ip-label-left">Adresse</div><div class="ip-value"><span>bedrock.syrasmp.fr</span><button class="ip-copy-mini" onclick="copyValue('bedrock.syrasmp.fr', this)">Copier</button></div></div>
+        <div class="ip-info-row"><div class="ip-label-left">Port</div><div class="ip-value"><span>19132</span><button class="ip-copy-mini" onclick="copyValue('19132', this)">Copier</button></div></div>
+      </div>
+
+      <!-- XBOX/PS TAB -->
+      <div id="xbox" class="ip-content">
+        <div class="ip-info-row"><div class="ip-label-left">Édition</div><div class="ip-value"><span>Bedrock</span></div></div>
+        <div class="ip-info-row"><div class="ip-label-left">Adresse</div><div class="ip-value"><span>bedrock.syrasmp.fr</span><button class="ip-copy-mini" onclick="copyValue('bedrock.syrasmp.fr', this)">Copier</button></div></div>
+        <div class="ip-info-row"><div class="ip-label-left">Port</div><div class="ip-value"><span>19132</span><button class="ip-copy-mini" onclick="copyValue('19132', this)">Copier</button></div></div>
       </div>
     </div>
-
-    <!-- PHONE -->
-    <div id="phone" class="ip-content">
-      <div class="ip-info">
-        <div class="ip-info-row">
-          <div class="ip-label-left">Edition</div>
-          <div class="ip-value"><span>Bedrock</span></div>
-        </div>
-        <div class="ip-info-row">
-          <div class="ip-label-left">Adresse</div>
-          <div style="flex:1;">
-            <div class="ip-value">
-              <span>bedrock.syrasmp.fr</span>
-              <button class="ip-copy-mini" onclick="copyValue('bedrock.syrasmp.fr', this)">Copier</button>
-            </div>
-          </div>
-        </div>
-        <div class="ip-info-row">
-          <div class="ip-label-left">Port</div>
-          <div style="flex:1;">
-            <div class="ip-value">
-              <span>19132</span>
-              <button class="ip-copy-mini" onclick="copyValue('19132', this)">Copier</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SWITCH -->
-    <div id="switch" class="ip-content">
-      <div class="ip-info">
-        <div class="ip-info-row">
-          <div class="ip-label-left">Edition</div>
-          <div class="ip-value"><span>Bedrock</span></div>
-        </div>
-        <div class="ip-info-row">
-          <div class="ip-label-left">Adresse</div>
-          <div style="flex:1;">
-            <div class="ip-value">
-              <span>bedrock.syrasmp.fr</span>
-              <button class="ip-copy-mini" onclick="copyValue('bedrock.syrasmp.fr', this)">Copier</button>
-            </div>
-          </div>
-        </div>
-        <div class="ip-info-row">
-          <div class="ip-label-left">Port</div>
-          <div style="flex:1;">
-            <div class="ip-value">
-              <span>19132</span>
-              <button class="ip-copy-mini" onclick="copyValue('19132', this)">Copier</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- XBOX/PS -->
-    <div id="xbox" class="ip-content">
-      <div class="ip-info">
-        <div class="ip-info-row">
-          <div class="ip-label-left">Edition</div>
-          <div class="ip-value"><span>Bedrock</span></div>
-        </div>
-        <div class="ip-info-row">
-          <div class="ip-label-left">Adresse</div>
-          <div style="flex:1;">
-            <div class="ip-value">
-              <span>bedrock.syrasmp.fr</span>
-              <button class="ip-copy-mini" onclick="copyValue('bedrock.syrasmp.fr', this)">Copier</button>
-            </div>
-          </div>
-        </div>
-        <div class="ip-info-row">
-          <div class="ip-label-left">Port</div>
-          <div style="flex:1;">
-            <div class="ip-value">
-              <span>19132</span>
-              <button class="ip-copy-mini" onclick="copyValue('19132', this)">Copier</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </section>
 
 </main>
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo">
-      <img src="LogoSMP.jpg" alt="Syra SMP">
-      <p>Rejoignez l'aventure, devenez une légende</p>
-    </div>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-name">SYRA SMP</div>
+        <p>Rejoignez l'aventure, devenez une légende.</p>
+        <div class="footer-socials">
+          <a href="https://discord.gg/PbntRm5sNy" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
+          <a href="https://youtube.com/@LeNoobInconnu" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="https://twitter.com/LeNoobInconnu" target="_blank" title="X"><i class="fab fa-twitter"></i></a>
+          <a href="https://twitch.tv/LenoobInconnu" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
+        </div>
+      </div>
 
-    <div class="footer-content">
-      <div class="footer-section">
-        <h4>Navigation</h4>
-        <ul>
-          <li><a href="index.htm">Accueil</a></li>
-          <li><a href="serveur.htm">Serveur</a></li>
-          <li><a href="reglement.htm">Règlement</a></li>
-          <li><a href="boutique.htm">Boutique</a></li>
-        </ul>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.htm">Accueil</a></li>
+            <li><a href="serveur.htm">Serveur</a></li>
+            <li><a href="reglement.htm">Règlement</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Communauté</h4>
+          <ul>
+            <li><a href="https://discord.gg/PbntRm5sNy" target="_blank">Discord</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="footer-section">
-        <h4>Découvrir</h4>
-        <ul>
-          <li><a href="carte.htm">Carte</a></li>
-          <li><a href="equipe.htm">Équipe</a></li>
-          <li><a href="actus.htm">Actus</a></li>
-          <li><a href="contact.htm">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h4>Communauté</h4>
-        <ul>
-          <li><a href="https://discord.gg/PbntRm5sNy" target="_blank">Discord</a></li>
-          <li><a href="contact.htm">Support</a></li>
-          <li><a href="serveur.htm">Status du serveur</a></li>
-          <li><a href="contact.htm">FAQ</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="footer-socials">
-      <a href="https://discord.gg/PbntRm5sNy" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
-      <a href="https://youtube.com/@LeNoobInconnu" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-      <a href="https://twitter.com/LeNoobInconnu" target="_blank" title="X"><i class="fab fa-twitter"></i></a>
-      <a href="https://twitch.tv/LenoobInconnu" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
     </div>
 
     <div class="footer-bottom">
@@ -617,45 +285,28 @@
 </footer>
 
 <script>
-  // Nav burger
   document.getElementById('burger').addEventListener('click', () => {
     document.getElementById('navLinks').classList.toggle('open');
   });
 
-  // IP Tabs
-  function switchTab(tabName, btn) {
+  function switchTab(tabName, evt) {
     document.querySelectorAll('.ip-content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.ip-tab').forEach(t => t.classList.remove('active'));
     document.getElementById(tabName).classList.add('active');
-    btn.classList.add('active');
+    evt.currentTarget.classList.add('active');
   }
 
-  // Copy
   function copyValue(text, button) {
     navigator.clipboard.writeText(text).then(() => {
-      const orig = button.textContent;
-      button.textContent = '✓ Copié';
+      const originalText = button.textContent;
+      button.textContent = '✓';
       button.classList.add('copied');
       setTimeout(() => {
-        button.textContent = orig;
+        button.textContent = originalText;
         button.classList.remove('copied');
       }, 2000);
     });
   }
-
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('in-view');
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
-
-  document.querySelectorAll('.scroll-reveal, .feat-item, .type-badge').forEach(el => {
-    if (!el.classList.contains('scroll-reveal')) el.classList.add('scroll-reveal');
-    observer.observe(el);
-  });
-
-
 </script>
 </body>
 </html>
